@@ -37,7 +37,7 @@ function sampev.onServerMessage(color, text)
 		send(text)
 		return false
 	end
-	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or text:find('Никто не подавал объявлений') or text:find('Данное объявление уже редактирует')) then
+	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or text:find('Никто не подавал объявлений') or text:find('Данное объявление уже редактирует') or text:find('Тот, кто подал объявление, покинул сервер'))  then
 		send(text)
 		return false
 	end
