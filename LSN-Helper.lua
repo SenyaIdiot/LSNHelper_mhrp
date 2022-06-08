@@ -1,7 +1,7 @@
 script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
-script_version('1.0')
+script_version('1.1')
 
 local sampev = require 'lib.samp.events'
 require 'lib.moonloader'
