@@ -6,6 +6,8 @@ script_version('1.1')
 local sampev = require 'lib.samp.events'
 require 'lib.moonloader'
 
+local adText = nil
+
 function send(result)
 	return sampAddChatMessage('LSNH » '.. result, -17740) -- -17740
 end
@@ -37,7 +39,10 @@ function sampev.onServerMessage(color, text)
 		send(text)
 		return false
 	end
-	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or text:find('Никто не подавал объявлений') or text:find('Данное объявление уже редактирует') or text:find('Тот, кто подал объявление, покинул сервер'))  then
+	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or
+							   text:find('Никто не подавал объявлений') or
+							   text:find('Данное объявление уже редактирует') or
+							   text:find('Тот, кто подал объявление, покинул сервер')) then
 		send(text)
 		return false
 	end
@@ -47,6 +52,7 @@ function sampev.onServerMessage(color, text)
 		return false
 	end
 	if color == -1 and text:find('Вы отклонили объявление') then
+		send(text)
 		return false
 	end
 end
@@ -55,15 +61,23 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 	--print(id, style, title, button1, button2, text)
 	if id == 1536 and title == '{6333FF}Публикация объявления' and text:find("%{ffffff%}Текст%:%{7FFF00%} (.*)") then
 		adText = (text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}')):gsub("\n", "")
-		if adText:find('Ponolupсобес') then lua_thread.create(function() wait(0) sampSetCurrentDialogEditboxText('Ресторан "Ponolup Italy" ищет сотрудников. Ждём вас! GPS 9-51.') end)
 
-		elseif adText:find('Ponolupгости') then lua_thread.create(function() wait(0) sampSetCurrentDialogEditboxText('Ресторан "Ponolup Italy" ждёт гостей! Насладись нашей кухней по адресу: GPS 9-51.') end)
-
-		elseif adText:find('<< Собеседование >>') then lua_thread.create(function() wait(0) sampSetCurrentDialogEditboxText('Проводятся собеседования в бар "for Narcos". GPS 9-46.') end)
-
-		elseif adText:find('<< Аммунация >>') then lua_thread.create(function() wait(0) sampSetCurrentDialogEditboxText('Самые дешёвые цены в городе, только в нашем AMMO "by Narcos". GPS 9-4.') end)
-
-		else lua_thread.create(function() wait(0) sampSetCurrentDialogEditboxText(adText) end)
+		if adText:find('Ponolupсобес') then lua_thread.create(function() wait(0)
+			sampSetCurrentDialogEditboxText('Ресторан "Ponolup Italy" ищет сотрудников. Ждём вас! GPS 9-51.') end)
+		
+		elseif adText:find('Ponolupгости') then lua_thread.create(function() wait(0)
+			sampSetCurrentDialogEditboxText('Ресторан "Ponolup Italy" ждёт гостей! Насладись нашей кухней по адресу: GPS 9-51.') end)
+		
+		-- elseif adText:find('<< Собеседование >>') then lua_thread.create(function() wait(0)
+		-- 	sampSetCurrentDialogEditboxText('Проводится собеседование в бар "for Narcos". GPS 9-46.') end)
+		
+		-- elseif adText:find('<< Аммунация >>') then lua_thread.create(function() wait(0)
+		-- 	sampSetCurrentDialogEditboxText('Самые дешёвые цены в городе, только в нашем AMMO "by Narcos". GPS 9-4.') end)
+		
+		else lua_thread.create(function() wait(0)
+			sampSetCurrentDialogEditboxText(adText) end)
+		
 		end
+
 	end
 end
