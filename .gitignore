@@ -1,3 +1,7 @@
+/lib
+/libstd
+/ljuajit
+/luarocks
 /config
 /disabled
 /.git
