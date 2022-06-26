@@ -4,7 +4,8 @@
 /libstd
 /luajit
 /luarocks
-listing.lua
+/.git
+chatlisting.lua
 moonloader.log
 reload_all.lua
 SF Integration.lua
