@@ -1,0 +1,20 @@
+rock_manifest = {
+   doc = {
+      LICENSE = "27f415f182a6809dcf4591188bf97641",
+      ["README.md"] = "7f864817f4674d7e01642998aecd1e71"
+   },
+   lib = {
+      mimgui = {
+         ["cimguidx9.dll"] = "cb0cd1b870648eeeda4be55475391da5"
+      }
+   },
+   lua = {
+      mimgui = {
+         ["cdefs.lua"] = "566d97f96f60488965850dc7d8a9b775",
+         ["dx9.lua"] = "d6ca394d270a705e58541607ea27a230",
+         ["imgui.lua"] = "004bbd2942fe39dff1f7c7159e31be5d",
+         ["init.lua"] = "82a6a5fd71f8d28ab6c5c00b856de4f8"
+      }
+   },
+   ["mimgui-1.4.1-1.rockspec"] = "c923888f5863e19b0e4f4a32f010dde2"
+}

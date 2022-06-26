@@ -1,0 +1,169 @@
+commands = {}
+dependencies = {
+   ["extensions-lite"] = {
+      ["1.0.3-1"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               },
+               {
+                  op = "<",
+                  version = {
+                     5, 4, string = "5.4"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   mimgui = {
+      ["1.4.1-1"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               },
+               {
+                  op = "<",
+                  version = {
+                     5, 4, string = "5.4"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   ["samp-lua"] = {
+      ["2.3.0-1"] = {
+         {
+            constraints = {
+               {
+                  op = "~>",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   }
+}
+modules = {
+   ["extensions-lite.bit"] = {
+      "extensions-lite/1.0.3-1"
+   },
+   ["extensions-lite.core.util"] = {
+      "extensions-lite/1.0.3-1"
+   },
+   ["extensions-lite.init"] = {
+      "extensions-lite/1.0.3-1"
+   },
+   ["extensions-lite.string"] = {
+      "extensions-lite/1.0.3-1"
+   },
+   ["extensions-lite.table"] = {
+      "extensions-lite/1.0.3-1"
+   },
+   ["mimgui.cdefs"] = {
+      "mimgui/1.4.1-1"
+   },
+   ["mimgui.cimguidx9"] = {
+      "mimgui/1.4.1-1"
+   },
+   ["mimgui.dx9"] = {
+      "mimgui/1.4.1-1"
+   },
+   ["mimgui.imgui"] = {
+      "mimgui/1.4.1-1"
+   },
+   ["mimgui.init"] = {
+      "mimgui/1.4.1-1"
+   },
+   ["samp.events"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.events.bitstream_io"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.events.core"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.events.extra_types"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.events.handlers"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.events.utils"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.raknet"] = {
+      "samp-lua/2.3.0-1"
+   },
+   ["samp.synchronization"] = {
+      "samp-lua/2.3.0-1"
+   }
+}
+repository = {
+   ["extensions-lite"] = {
+      ["1.0.3-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["extensions-lite.bit"] = "extensions-lite/bit.lua",
+               ["extensions-lite.core.util"] = "extensions-lite/core/util.lua",
+               ["extensions-lite.init"] = "extensions-lite/init.lua",
+               ["extensions-lite.string"] = "extensions-lite/string.lua",
+               ["extensions-lite.table"] = "extensions-lite/table.lua"
+            }
+         }
+      }
+   },
+   mimgui = {
+      ["1.4.1-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["mimgui.cdefs"] = "mimgui/cdefs.lua",
+               ["mimgui.cimguidx9"] = "mimgui/cimguidx9.dll",
+               ["mimgui.dx9"] = "mimgui/dx9.lua",
+               ["mimgui.imgui"] = "mimgui/imgui.lua",
+               ["mimgui.init"] = "mimgui/init.lua"
+            }
+         }
+      }
+   },
+   ["samp-lua"] = {
+      ["2.3.0-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["samp.events"] = "samp/events.lua",
+               ["samp.events.bitstream_io"] = "samp/events/bitstream_io.lua",
+               ["samp.events.core"] = "samp/events/core.lua",
+               ["samp.events.extra_types"] = "samp/events/extra_types.lua",
+               ["samp.events.handlers"] = "samp/events/handlers.lua",
+               ["samp.events.utils"] = "samp/events/utils.lua",
+               ["samp.raknet"] = "samp/raknet.lua",
+               ["samp.synchronization"] = "samp/synchronization.lua"
+            }
+         }
+      }
+   }
+}

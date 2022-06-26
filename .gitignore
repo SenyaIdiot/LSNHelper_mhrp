@@ -1,9 +1,5 @@
 /config
 /disabled
-/lib
-/libstd
-/luajit
-/luarocks
 /.git
 chatlisting.lua
 moonloader.log
