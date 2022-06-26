@@ -1,6 +1,6 @@
 /lib
 /libstd
-/ljuajit
+/luajit
 /luarocks
 /config
 /disabled
