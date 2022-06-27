@@ -1,12 +1,13 @@
 /.git
 .gitignore
+gitignore
+
 /lib
 /libstd
 /luajit
 /luarocks
 /config
 /disabled
-gitignore
 chatlisting.lua
 moonloader.log
 reload_all.lua
