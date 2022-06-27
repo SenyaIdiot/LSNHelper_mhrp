@@ -1,0 +1,12 @@
+/.git
+/lib
+/libstd
+/luajit
+/luarocks
+/config
+/disabled
+chatlisting.lua
+moonloader.log
+reload_all.lua
+SF Integration.lua
+README.md
