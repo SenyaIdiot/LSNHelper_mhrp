@@ -5,6 +5,8 @@
 /config
 /disabled
 /.git
+.gitignore
+gitignore
 chatlisting.lua
 moonloader.log
 reload_all.lua
