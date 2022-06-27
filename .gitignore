@@ -1,7 +1,4 @@
 /.git
-.gitignore
-gitignore
-
 /lib
 /libstd
 /luajit
