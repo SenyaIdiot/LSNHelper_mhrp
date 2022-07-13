@@ -212,8 +212,8 @@ end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
 	if id == 1536 and title == '{6333FF}Публикация объявления' then
-		local adN = ''
-		adN = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
+		--local adN = ''
+		--adN = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
 		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
 		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
 		mainWindow[0] = true
