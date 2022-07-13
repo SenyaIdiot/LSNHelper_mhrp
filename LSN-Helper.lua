@@ -236,8 +236,7 @@ end
 
 function sampev.onSendDialogResponse(dialogId, button, listboxId, input)
 	if dialogId == 1000 and button == 1 then
-		local fr = ''
-		fr, adNick = input:match('(%d+)%. (.*)')
+		local fr = ''; fr, adNick = input:match('(%d+)%. (.*)')
 	end
 end
 
