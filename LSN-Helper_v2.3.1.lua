@@ -2,7 +2,7 @@ script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
 script_properties('work-in-pause')
-script_version('2.3.1')
+script_version('2.4')
 
 local imgui = require 'mimgui' -- теперь мимгуй, а не имгуй...
 local encoding = require 'encoding'
@@ -40,7 +40,7 @@ local fileJson = getWorkingDirectory()..'\\config\\saved_text_edition.json'
 local list = {}
 
 local new, str, sizeof = imgui.new, ffi.string, ffi.sizeof
-local mainWindow = new.bool(false)
+local mainWindow = new.bool(true)
 
 local adInput = new.char[256]('')
 local adNick, adPrice, adText = '', '', ''
@@ -60,7 +60,7 @@ local newFrame = imgui.OnFrame(
 		local resX, resY = getScreenResolution()
 		local sizeX, sizeY = 700, 340
 		imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY), imgui.Cond.FirstUseEver)
+		imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY * 1.04))
 		imgui.Begin(u8'Публикация oбъявления | LSN-Helper '..thisScript().version, nil, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.AlwaysAutoResize)
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('Отправитель:'); imgui.SameLine((sizeX - 15) / 2 + 10); imgui.TextColoredRGB('Цена:')
@@ -103,22 +103,28 @@ local newFrame = imgui.OnFrame(
 		imgui.InputText(u8'', adInput, sizeof(adInput))
 		imgui.PopAllowKeyboardFocus()
 
-		imgui.SetCursorPos(imgui.ImVec2(5, sizeY - 60))
-		if imgui.Button(u8'Передать в /rb', imgui.ImVec2((sizeX - 15) / 2 , 25)) then
+		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 60))
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.34, 0.42, 0.51, 0.8))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.38, 0.48, 0.54, 0.57))
+		if imgui.Button(u8'Передать в /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
 				send('В тексте пусто, зачем отправлять?', -1)
 			else
 				sampSendChat('/rb '.. adNick .. ' (' .. adPrice .. '): '.. adText)
 			end
 		end
+		imgui.PopStyleColor(2)
 
-		imgui.SameLine((sizeX - 15) / 2 + 10)
-
-		if imgui.Button(u8'Поиск (скоро)', imgui.ImVec2((sizeX - 15) / 2 , 25)) then
+		--! 
+		imgui.SameLine((sizeX - 17) / 2 + 10)
+		if imgui.Button(u8'Поиск (скоро)', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			send('Скоро', -1)
 		end
 
-		if imgui.Button(u8'Опубликовать', imgui.ImVec2((sizeX - 15) / 2 , 25)) then
+		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 33))
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 0.7))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.57))
+		if imgui.Button(u8'Опубликовать', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			local tempText = (u8:decode(str(adInput)))
 			local Char = tempText:match('.+(%p)$')
 			
@@ -141,8 +147,12 @@ local newFrame = imgui.OnFrame(
 			    send('В конце знаки препинание не ставил!')
 			end
 		end
-		imgui.SameLine((sizeX - 15) / 2 + 10)
-		if imgui.Button(u8'Отклонить', imgui.ImVec2((sizeX - 15) / 2 , 25)) then
+		imgui.PopStyleColor(2)
+		
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(1.00, 0.25, 0.25, 0.7))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.57))
+		imgui.SameLine((sizeX - 17) / 2 + 10)
+		if imgui.Button(u8'Отклонить', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
 				send('Вы ничего не ввели в поле ввода', -1)
 			else
@@ -166,17 +176,18 @@ local newFrame = imgui.OnFrame(
 
 			end
 		end
-
+		imgui.PopStyleColor(2)
+		
 		imgui.End()
 	end
 )
 
 function main()
-	while not isSampAvailable() do wait(0) end; for i=1,2 do print('<>') end
+	while not isSampAvailable() do wait(0) end
 	if not doesFileExist(fileJson) then json(fileJson):write({}) end -- если нет файла, то создаем его
 	list = json(fileJson):read() -- получаем массив из файла file
 	send('Скрипт успешно загружено | '..thisScript().version)
-	print('Script LSN-Helper 1.0 loaded - Discord: kyrtion#7310')
+	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	--! debug window (dont use)
 	-- sampRegisterChatCommand('dia', function()
@@ -201,7 +212,8 @@ end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
 	if id == 1536 and title == '{6333FF}Публикация объявления' then
-		adNick = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
+		local adN = ''
+		adN = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
 		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
 		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
 		mainWindow[0] = true
@@ -222,6 +234,14 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 	end
 end
 
+function sampev.onSendDialogResponse(dialogId, button, listboxId, input)
+	if dialogId == 1000 and button == 1 then
+		local fr = ''
+		fr, adNick = input:match('(%d+)%. (.*)')
+	end
+end
+
+
 function sampev.onServerMessage(color, text)
 	if color == 2147418282 then
 		if text:find('новое объявление на проверку') then
@@ -239,13 +259,14 @@ function sampev.onServerMessage(color, text)
 								 text == "Подсказка: Чтобы взаимодействовать с ботом/игроком, нажмите 'пр. кнопка мыши' + 'H'" or
 								 text == "Подсказка: Чтобы открыть багажник машины, нажмите 'пр. кнопка мыши' + 'Прыжок'" or
 								 text == "Подсказка: Вы можете отключить помощь в /mm -> настройки"
-	) then return false end
+		) then return false
+	end
 
 	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or
 							   text:find('Никто не подавал объявлений') or
 							   text:find('Данное объявление уже редактирует') or
 							   text:find('Тот, кто подал объявление, покинул сервер')
-	) then
+		) then
 		send(text)
 		return false
 	end
