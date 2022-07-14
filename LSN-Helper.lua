@@ -58,10 +58,10 @@ local lockVerify = false
 local lockFailed = false
 local newVersion = 'None'
 
-local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini' -- тут тоже свою ссылку
-local update_path = getWorkingDirectory() .. '/update_lsn.ini' -- и тут свою ссылку
+local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini'
+local update_path = getWorkingDirectory() .. '/update_lsn.ini'
 local script_vers = tostring(thisScript().version)
-local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true' -- тут свою ссылку
+local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true'
 local script_path = thisScript().path
 
 function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
@@ -228,7 +228,7 @@ function main()
                 lockVerify = true
             end
 			sampAddChatMessage('removed update_lsn.ini', -1)
-            --os.remove(update_path)
+            os.remove(update_path)
         end
     end)
 	
