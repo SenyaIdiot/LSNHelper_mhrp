@@ -2,7 +2,7 @@ script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
 script_properties('work-in-pause')
-script_version('2.4.1')
+script_version('2.4')
 
 require 'lib.moonloader'
 local dlstatus = require('moonloader').download_status
@@ -206,9 +206,13 @@ function main()
 
 	sampRegisterChatCommand('verify', function()
 		if lockVerify then
-			checkVerify = true
-			send('ќбновл€ю '..script_vers ..' -> '..updateIni.info.version..' ...')
-			lockVerify = false
+			if renderWindow[0] and sampIsDialogActive() then				
+				send('«акройте диалог и снова вводите /verify')
+			else
+				checkVerify = true
+				send('ќбновл€ю '..script_vers ..' -> '..updateIni.info.version..' ...')
+				lockVerify = false
+			end
 		end
 	end)
 
