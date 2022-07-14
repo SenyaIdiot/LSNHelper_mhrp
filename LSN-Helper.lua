@@ -89,7 +89,6 @@ local newFrame = imgui.OnFrame(
 		imgui.BeginChild('ChildWindows1', imgui.ImVec2(sizeX - 372, 25), true)
 		imgui.TextColoredRGB('{FFFFFF}' .. adNick)
 		imgui.EndChild()
-		
 		imgui.SameLine((sizeX - 15) / 2 + 10);
 
 		imgui.BeginChild('ChildWindows2', imgui.ImVec2(sizeX - 372, 25), true)
@@ -100,14 +99,13 @@ local newFrame = imgui.OnFrame(
 		imgui.TextColoredRGB('Текст:')
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 120))
-
 		imgui.BeginChild('ChildWindows3', imgui.ImVec2(sizeX - 40, 25), true)
 		imgui.TextColoredRGB(adText)
 		imgui.EndChild()
 
-
 		imgui.SetCursorPos(imgui.ImVec2(20, 165))
 		imgui.TextColoredRGB('Введите новый текст для этого объявления. Но не оставьте поле пустым!')
+
 		imgui.SetCursorPos(imgui.ImVec2(20, 180))
 		imgui.TextColoredRGB('Вы так-же можете отклонить объявление с написанной в поле причиной и нажав после кнопку "Отклонить".')
 
@@ -137,7 +135,6 @@ local newFrame = imgui.OnFrame(
 		end
 		imgui.PopStyleColor(3)
 
-		--! 
 		imgui.SameLine((sizeX - 17) / 2 + 10)
 		if imgui.Button(u8'Поиск', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			imgui.OpenPopup(u8'Поиск')
@@ -273,20 +270,10 @@ function main()
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	--! debug window (dont use)
-	sampRegisterChatCommand('dia', function()
-		renderWindow[0] = not renderWindow[0]
-		imgui.StrCopy(adInput, u8(adText))
-		autoFocus = true
-	end)
-
-	-- sampRegisterChatCommand('js', function(i)
-	-- 	if (not i) or (i == '') then
-	-- 		send('/js 1-999')
-	-- 	else
-	-- 		--adList = json(adJson):read()
-	-- 		send(''..i..': '..tostring(adList[i]))
-	-- 	end
-		
+	-- sampRegisterChatCommand('dia', function()
+	-- 	renderWindow[0] = not renderWindow[0]
+	-- 	imgui.StrCopy(adInput, u8(adText))
+	-- 	autoFocus = true
 	-- end)
 
 	sampRegisterChatCommand('verify', function()
@@ -302,18 +289,16 @@ function main()
 	end)
 
 	downloadUrlToFile(update_url, update_path, function(id, status)
-		--sampAddChatMessage('downloading', -1)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-			--sampAddChatMessage('succes', -1)
 			updateIni = inicfg.load(nil, update_path)
 			newVersion = tostring(updateIni.info.version)
 			oldVersion = tostring(thisScript().version)
+			sampAddChatMessage(newVersion..' -> '..oldVersion, -1)
 			if newVersion ~= oldVersion then
 				send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
 				update_state = true
 				lockVerify = true
 			end
-			--sampAddChatMessage('removed update_lsn.ini', -1)
 			os.remove(update_path)
 		end
 	end)
@@ -427,27 +412,20 @@ function sampev.onServerMessage(color, text)
 			print('>> [' .. wtfac .. ']')
 
 			lua_thread.create(function()
-
 				local lockAd = false
 				local lockAd2 = false
-
-
 				for i=1, #adList do
 					if tostring(wtfac) == tostring(adList[i]) then
 						lockAd = true
 						break
 					end
 				end
-
-
 				if not lockAd then
 					json(adJson):read()
-					
 					table.insert(adList, wtfac)
 					json(adJson):write((adList))
 					lockAd = true
 				end
-
 			end)
 
 			return true
