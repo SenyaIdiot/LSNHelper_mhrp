@@ -213,7 +213,9 @@ function main()
 	end)
 
     downloadUrlToFile(update_url, update_path, function(id, status)
+		sampAddChatMessage('downloading', -1)
         if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+			sampAddChatMessage('succes', -1)
             updateIni = inicfg.load(nil, update_path)
             if tonumber(updateIni.info.version) ~= script_vers then
                 newVersion = updateIni.info.version
@@ -221,6 +223,7 @@ function main()
                 update_state = true
                 lockVerify = true
             end
+			sampAddChatMessage('removed update_lsn.ini', -1)
             --os.remove(update_path)
         end
     end)
