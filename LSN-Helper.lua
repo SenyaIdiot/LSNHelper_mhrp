@@ -7,6 +7,9 @@ script_version('2.4')
 require 'lib.moonloader'
 local dlstatus = require('moonloader').download_status
 
+if not doesDirectoryExist('moonloader/config') then createDirectory("moonloader/config") end
+if not doesDirectoryExist('moonloader/config/LSN-Helper') then createDirectory ("moonloader/config/LSN-Helper") end
+
 local imgui = require 'mimgui' -- теперь мимгуй, а не имгуй...
 local encoding = require 'encoding'
 local ffi = require 'ffi'
@@ -38,13 +41,16 @@ encoding.default = 'CP1251'
 u8 = encoding.UTF8
 
 
-local fileJson = getWorkingDirectory()..'\\config\\saved_text_edition.json'
-local list = {}
+local editJson = getWorkingDirectory()..'/config/LSN-Helper/edit.json'
+local adJson = getWorkingDirectory()..'/config/LSN-Helper/ad.json'
+local editList = {}
+local adList = {}
 
 local new, str, sizeof = imgui.new, ffi.string, ffi.sizeof
 local renderWindow = new.bool(false)
 
 local adInput = new.char[256]('')
+local inputSearch = new.char[256]('')
 local adNick, adPrice, adText = '', '', ''
 local confirm = false
 local block = false
@@ -68,6 +74,30 @@ local script_path = thisScript().path
 function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
 
 imgui.OnInitialize(function() imgui.DarkTheme(); imgui.GetIO().IniFilename = nil; end)
+
+local inputSearch = imgui.new.char[256](u8'')
+--[[
+	local russian_characters = {
+		[168] = 'Ё', [184] = 'ё', [192] = 'А', [193] = 'Б', [194] = 'В', [195] = 'Г', [196] = 'Д', [197] = 'Е', [198] = 'Ж', [199] = 'З', [200] = 'И', [201] = 'Й', [202] = 'К', [203] = 'Л', [204] = 'М', [205] = 'Н', [206] = 'О', [207] = 'П', [208] = 'Р', [209] = 'С', [210] = 'Т', [211] = 'У', [212] = 'Ф', [213] = 'Х', [214] = 'Ц', [215] = 'Ч', [216] = 'Ш', [217] = 'Щ', [218] = 'Ъ', [219] = 'Ы', [220] = 'Ь', [221] = 'Э', [222] = 'Ю', [223] = 'Я', [224] = 'а', [225] = 'б', [226] = 'в', [227] = 'г', [228] = 'д', [229] = 'е', [230] = 'ж', [231] = 'з', [232] = 'и', [233] = 'й', [234] = 'к', [235] = 'л', [236] = 'м', [237] = 'н', [238] = 'о', [239] = 'п', [240] = 'р', [241] = 'с', [242] = 'т', [243] = 'у', [244] = 'ф', [245] = 'х', [246] = 'ц', [247] = 'ч', [248] = 'ш', [249] = 'щ', [250] = 'ъ', [251] = 'ы', [252] = 'ь', [253] = 'э', [254] = 'ю', [255] = 'я',
+]]
+-- function string.rlower(s)
+-- 	s = s:lower()
+-- 	local strlen = s:len()
+-- 	if strlen == 0 then return s end
+-- 	s = s:lower()
+-- 	local output = ''
+-- 	for i = 1, strlen do
+-- 		local ch = s:byte(i)
+-- 		if ch >= 192 and ch <= 223 then -- upper russian characters
+-- 			output = output .. russian_characters[ch + 32]
+-- 		elseif ch == 168 then -- Ё
+-- 			output = output .. russian_characters[184]
+-- 		else
+-- 			output = output .. string.char(ch)
+-- 		end
+-- 	end
+-- 	return output
+-- end
 
 local newFrame = imgui.OnFrame(
 	function() return renderWindow[0] end,
@@ -101,7 +131,7 @@ local newFrame = imgui.OnFrame(
 
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 165))
-		imgui.TextColoredRGB('Введите новый текст для этого объявления или оставьте поле пустым если его редактирование не нужно.')
+		imgui.TextColoredRGB('Введите новый текст для этого объявления. Но не оставьте поле пустым!')
 		imgui.SetCursorPos(imgui.ImVec2(20, 180))
 		imgui.TextColoredRGB('Вы так-же можете отклонить объявление с написанной в поле причиной и нажав после кнопку "Отклонить".')
 
@@ -115,7 +145,7 @@ local newFrame = imgui.OnFrame(
 
 		if imgui.IsWindowAppearing() then imgui.SetKeyboardFocusHere(-1) end
 		imgui.PushAllowKeyboardFocus(false)
-		imgui.InputText(u8'', adInput, sizeof(adInput))
+		imgui.InputText(u8'##adInput', adInput, sizeof(adInput))
 		imgui.PopAllowKeyboardFocus()
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 60))
@@ -133,8 +163,68 @@ local newFrame = imgui.OnFrame(
 
 		--! 
 		imgui.SameLine((sizeX - 17) / 2 + 10)
-		if imgui.Button(u8'Поиск (скоро)', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
-			send('Скоро', -1)
+		if imgui.Button(u8'Поиск', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+			imgui.OpenPopup(u8'Поиск')
+		end
+
+		if imgui.BeginPopupModal(u8'Поиск', _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.AlwaysAutoResize) then
+			local pSize = imgui.ImVec2(770, 340)
+			imgui.SetWindowSizeVec2(pSize)
+	
+			imgui.SetCursorPos(imgui.ImVec2(20, 45))
+			imgui.Text(u8'Текст:') imgui.SameLine(70) imgui.TextColoredRGB(adText)
+				
+			imgui.SetCursorPos(imgui.ImVec2(20, 70)) imgui.Text(u8'Поиск:') imgui.SameLine(70)
+			
+			imgui.SetCursorPos(imgui.ImVec2(70, 67))
+			imgui.PushItemWidth(pSize.x - 110)
+
+			if imgui.IsWindowAppearing() then imgui.SetKeyboardFocusHere(-1) end
+			imgui.PushAllowKeyboardFocus(false)
+			if imgui.InputText('##inputSearch', inputSearch, sizeof(inputSearch)) then str(inputSearch):find(str(inputSearch):gsub("%p", "%%%1")) end
+			imgui.PopAllowKeyboardFocus()
+			imgui.PopItemWidth()
+			
+			imgui.SetCursorPos(imgui.ImVec2(20, 108))
+			imgui.Text(u8'Результаты:')
+	
+			imgui.SetCursorPos(imgui.ImVec2(19, 130))
+			imgui.BeginChild('ChildWindowsS', imgui.ImVec2(pSize.x/2 + 325, pSize.y/2 - 6), true)
+			
+			for i=1, #adList do
+				if string.len(str(inputSearch)) ~= 0 then
+					if string.find(u8(adList[i]), str(inputSearch), 1, true) then
+						if imgui.Button(u8' > ##'..tostring(i)) then
+							imgui.StrCopy(adInput, u8(adList[i]))
+							imgui.CloseCurrentPopup()
+							inputSearch = new.char[256]('')
+						end
+						imgui.SameLine(36)
+						imgui.Text(u8(adList[i]))
+						imgui.Separator()
+					end
+				else
+					if imgui.Button(u8' > ##'..tostring(i)) then
+						imgui.StrCopy(adInput, u8(adList[i]))
+						inputSearch = new.char[256]('')
+						imgui.CloseCurrentPopup()
+					end
+					imgui.SameLine(36)
+					imgui.Text(u8(adList[i]))
+					imgui.Separator()
+				end
+			end
+
+			imgui.EndChild()
+
+
+			imgui.SetCursorPos(imgui.ImVec2(5, pSize.y - 20))
+			if imgui.Button(u8'Закрыть', imgui.ImVec2(pSize.x - 30, 25)) then
+				inputSearch = new.char[256]('')
+				imgui.CloseCurrentPopup()
+			end
+	
+			imgui.EndPopup()
 		end
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 33))
@@ -148,20 +238,20 @@ local newFrame = imgui.OnFrame(
 			if (u8:decode(str(adInput))) == (nil or '') then
 				send('В тексте пусто, зачем отправлять?', -1)
 
-			elseif Char and Char ~= ('$' or ',' or '/' or '>' or '<' or '-' or '=' or '+' or '_') then
+			elseif Char and Char ~= ('$' or ',' or '/' or '>' or '<' or '-' or '=' or '+' or '_' or "'" or '"') then
 				sampSendDialogResponse(1536,1,0,(u8:decode(str(adInput))))
 				renderWindow[0] = false
 				confirm = true
 
 				lua_thread.create(function()
-					list[adText] = (u8:decode(str(adInput)))
-					json(fileJson):write(list)
+					editList[adText] = (u8:decode(str(adInput)))
+					json(editJson):write(editList)
 				end)
 
 				adNick, adPrice, adText = '', '', ''
 			
 			else
-			    send('В конце знаки препинание не ставил!')
+				send('В конце знаки препинание не ставил!')
 			end
 		end
 		imgui.PopStyleColor(3)
@@ -196,8 +286,13 @@ local newFrame = imgui.OnFrame(
 
 function main()
 	while not isSampAvailable() do wait(0) end
-	if not doesFileExist(fileJson) then json(fileJson):write({}) end -- если нет файла, то создаем его
-	list = json(fileJson):read() -- получаем массив из файла file
+
+	if not doesFileExist(editJson) then json(editJson):write({}) end
+	editList = json(editJson):read()
+
+	if not doesFileExist(adJson) then json(adJson):write({}) end
+	adList = json(adJson):read()
+
 	send('Скрипт успешно загружено | '..thisScript().version)
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
@@ -207,6 +302,16 @@ function main()
 		imgui.StrCopy(adInput, u8(adText))
 		autoFocus = true
 	end)
+
+	-- sampRegisterChatCommand('js', function(i)
+	-- 	if (not i) or (i == '') then
+	-- 		send('/js 1-999')
+	-- 	else
+	-- 		--adList = json(adJson):read()
+	-- 		send(''..i..': '..tostring(adList[i]))
+	-- 	end
+		
+	-- end)
 
 	sampRegisterChatCommand('verify', function()
 		if lockVerify then
@@ -220,35 +325,35 @@ function main()
 		end
 	end)
 
-    downloadUrlToFile(update_url, update_path, function(id, status)
-		sampAddChatMessage('downloading', -1)
-        if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-			sampAddChatMessage('succes', -1)
-            updateIni = inicfg.load(nil, update_path)
+	downloadUrlToFile(update_url, update_path, function(id, status)
+		--sampAddChatMessage('downloading', -1)
+		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+			--sampAddChatMessage('succes', -1)
+			updateIni = inicfg.load(nil, update_path)
 			newVersion = tostring(updateIni.info.version)
 			oldVersion = tostring(thisScript().version)
-            if newVersion ~= oldVersion then
-                send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
-                update_state = true
-                lockVerify = true
-            end
-			sampAddChatMessage('removed update_lsn.ini', -1)
-            os.remove(update_path)
-        end
-    end)
+			if newVersion ~= oldVersion then
+				send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
+				update_state = true
+				lockVerify = true
+			end
+			--sampAddChatMessage('removed update_lsn.ini', -1)
+			os.remove(update_path)
+		end
+	end)
 	
 	while true do
 		wait(0)
 		if update_state and checkVerify then
-            downloadUrlToFile(script_url, script_path, function(id, status)
-                if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-                    send('Скрипт успешно обновлен! Сейчас будет перезагружен', -1)
-                    lockFailed = true
-                    thisScript():reload()
-                end
-            end)
-            break
-        end
+			downloadUrlToFile(script_url, script_path, function(id, status)
+				if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+					send('Скрипт успешно обновлен! Сейчас будет перезагружен', -1)
+					lockFailed = true
+					thisScript():reload()
+				end
+			end)
+			break
+		end
 	end
 end
 
@@ -270,11 +375,11 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
 		renderWindow[0] = true
 		autoFocus = true
-		if list[adText] == nil then
+		if editList[adText] == nil then
 			imgui.StrCopy(adInput, u8(adText))
 			copying = false
 		else	
-			imgui.StrCopy(adInput, u8(list[adText]))
+			imgui.StrCopy(adInput, u8(editList[adText]))
 			copying = true
 		end
 		return false
@@ -344,6 +449,31 @@ function sampev.onServerMessage(color, text)
 		if text:match('%[News Studio%] (.*) %|') then 
 			wtfac = text:match('%[News Studio%] (.*) %|')
 			print('>> [' .. wtfac .. ']')
+
+			lua_thread.create(function()
+
+				local lockAd = false
+				local lockAd2 = false
+
+
+				for i=1, #adList do
+					if tostring(wtfac) == tostring(adList[i]) then
+						lockAd = true
+						break
+					end
+				end
+
+
+				if not lockAd then
+					json(adJson):read()
+					
+					table.insert(adList, wtfac)
+					json(adJson):write((adList))
+					lockAd = true
+				end
+
+			end)
+
 			return true
 		end
 	end
