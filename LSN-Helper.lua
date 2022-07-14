@@ -57,6 +57,7 @@ local checkVerify = false
 local lockVerify = false
 local lockFailed = false
 local newVersion = 'None'
+local oldVersion = 'None'
 
 local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini'
 local update_path = getWorkingDirectory() .. '/update_lsn.ini'
@@ -210,7 +211,7 @@ function main()
 				send('Закройте диалог и снова вводите /verify')
 			else
 				checkVerify = true
-				send('Обновляю '..script_vers ..' -> '..updateIni.info.version..' ...')
+				send('Обновляю '..oldVersion ..' -> '..newVersion.info.version..' ...')
 				lockVerify = false
 			end
 		end
@@ -221,9 +222,10 @@ function main()
         if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			sampAddChatMessage('succes', -1)
             updateIni = inicfg.load(nil, update_path)
-            if tostring(updateIni.info.version) ~= script_vers then
-                newVersion = updateIni.info.version
-                send('Есть обновление! Версия: '..updateIni.info.version..'. Чтобы обновить вводите /verify', -1)
+			newVersion = tostring(updateIni.info.version)
+			oldVersion = tostring(thisScript().version)
+            if tostring(newVersion) ~= oldVersion then
+                send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
                 update_state = true
                 lockVerify = true
             end
