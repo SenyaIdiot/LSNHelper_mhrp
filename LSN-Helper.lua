@@ -148,7 +148,7 @@ local newFrame = imgui.OnFrame(
 			if (u8:decode(str(adInput))) == (nil or '') then
 				send('В тексте пусто, зачем отправлять?', -1)
 
-			elseif Char and Char ~= '$' then
+			elseif Char and Char ~= ('$' or ',' or '/' or '>' or '<' or '-' or '=' or '+' or '_') then
 				sampSendDialogResponse(1536,1,0,(u8:decode(str(adInput))))
 				renderWindow[0] = false
 				confirm = true
