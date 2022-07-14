@@ -251,6 +251,7 @@ function sampev.onServerMessage(color, text)
 		elseif text:find('запросил отказ на публикацию') then
 			send(text)
 			return false
+			
 		end
 	end
 
