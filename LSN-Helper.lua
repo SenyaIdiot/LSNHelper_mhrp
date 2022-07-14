@@ -221,7 +221,7 @@ function main()
         if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			sampAddChatMessage('succes', -1)
             updateIni = inicfg.load(nil, update_path)
-            if tonumber(updateIni.info.version) ~= script_vers then
+            if tostring(updateIni.info.version) ~= script_vers then
                 newVersion = updateIni.info.version
                 send('Есть обновление! Версия: '..updateIni.info.version..'. Чтобы обновить вводите /verify', -1)
                 update_state = true
