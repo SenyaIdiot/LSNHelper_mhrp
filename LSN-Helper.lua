@@ -211,7 +211,7 @@ function main()
 				send('«акройте диалог и снова вводите /verify')
 			else
 				checkVerify = true
-				send('ќбновл€ю '..oldVersion ..' -> '..newVersion.info.version..' ...')
+				send('ќбновл€ю '..oldVersion ..' -> '..newVersion..' ...')
 				lockVerify = false
 			end
 		end
