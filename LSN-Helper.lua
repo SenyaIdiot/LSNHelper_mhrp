@@ -2,7 +2,7 @@ script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
 script_properties('work-in-pause')
-script_version('2.4.1')
+script_version('2.4')
 
 require 'lib.moonloader'
 local dlstatus = require('moonloader').download_status
@@ -119,8 +119,9 @@ local newFrame = imgui.OnFrame(
 		imgui.PopAllowKeyboardFocus()
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 60))
-		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.34, 0.42, 0.51, 0.8))
-		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.38, 0.48, 0.54, 0.57))
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.34, 0.42, 0.51, 1.0))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.34, 0.42, 0.51, 0.9))
+		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.34, 0.42, 0.51, 0.8))
 		if imgui.Button(u8'Передать в /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
 				send('В тексте пусто, зачем отправлять?', -1)
@@ -128,7 +129,7 @@ local newFrame = imgui.OnFrame(
 				sampSendChat('/rb '.. adNick .. ' (' .. adPrice .. '): '.. adText)
 			end
 		end
-		imgui.PopStyleColor(2)
+		imgui.PopStyleColor(3)
 
 		--! 
 		imgui.SameLine((sizeX - 17) / 2 + 10)
@@ -137,8 +138,9 @@ local newFrame = imgui.OnFrame(
 		end
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 33))
-		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 0.7))
-		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.57))
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 1.0))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.9))
+		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.2, 0.77, 0.33, 0.8))
 		if imgui.Button(u8'Опубликовать', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			local tempText = (u8:decode(str(adInput)))
 			local Char = tempText:match('.+(%p)$')
@@ -162,10 +164,11 @@ local newFrame = imgui.OnFrame(
 			    send('В конце знаки препинание не ставил!')
 			end
 		end
-		imgui.PopStyleColor(2)
+		imgui.PopStyleColor(3)
 		
-		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(1.00, 0.25, 0.25, 0.7))
-		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.57))
+		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(1.00, 0.25, 0.25, 1.0))
+		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.9))
+		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(1.00, 0.25, 0.25, 0.8))
 		imgui.SameLine((sizeX - 17) / 2 + 10)
 		if imgui.Button(u8'Отклонить', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
@@ -185,7 +188,7 @@ local newFrame = imgui.OnFrame(
 
 			end
 		end
-		imgui.PopStyleColor(2)
+		imgui.PopStyleColor(3)
 		
 		imgui.End()
 	end
