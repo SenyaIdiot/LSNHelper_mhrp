@@ -224,7 +224,7 @@ function main()
             updateIni = inicfg.load(nil, update_path)
 			newVersion = tostring(updateIni.info.version)
 			oldVersion = tostring(thisScript().version)
-            if tostring(newVersion) ~= oldVersion then
+            if newVersion ~= oldVersion then
                 send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
                 update_state = true
                 lockVerify = true
