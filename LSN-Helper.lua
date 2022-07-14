@@ -2,7 +2,7 @@ script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
 script_properties('work-in-pause')
-script_version('2.4')
+script_version('2.4.1')
 
 require 'lib.moonloader'
 local dlstatus = require('moonloader').download_status
@@ -58,7 +58,7 @@ local lockVerify = false
 local lockFailed = false
 local newVersion = 'None'
 
-local update_url = 'hhttps://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini' -- тут тоже свою ссылку
+local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini' -- тут тоже свою ссылку
 local update_path = getWorkingDirectory() .. '/update_lsn.ini' -- и тут свою ссылку
 local script_vers = tostring(thisScript().version)
 local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true' -- тут свою ссылку
@@ -478,7 +478,9 @@ end
 
 function onScriptTerminate(s, q)
 	if s == thisScript() then
-		send('Что-то пошло не так с скриптом... Отключаем', -1)
+		if not lockFailed then
+			send('Что-то пошло не так с скриптом... Отключаем', -1)
+		end
 		return true
 	end
 end
