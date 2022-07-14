@@ -4,16 +4,14 @@ script_author('kyrtion#7310')
 script_properties('work-in-pause')
 script_version('2.4')
 
+require 'lib.moonloader'
+local dlstatus = require('moonloader').download_status
+
 local imgui = require 'mimgui' -- теперь мимгуй, а не имгуй...
 local encoding = require 'encoding'
-local keys = require 'vkeys'
 local ffi = require 'ffi'
 local sampev = require 'lib.samp.events'
 local inicfg = require 'inicfg'
-require 'lib.moonloader'
-
-encoding.default = 'CP1251'
-u8 = encoding.UTF8
 
 function json(filePath)
 	local f = {}
@@ -36,11 +34,15 @@ function json(filePath)
 	return f
 end
 
+encoding.default = 'CP1251'
+u8 = encoding.UTF8
+
+
 local fileJson = getWorkingDirectory()..'\\config\\saved_text_edition.json'
 local list = {}
 
 local new, str, sizeof = imgui.new, ffi.string, ffi.sizeof
-local mainWindow = new.bool(true)
+local renderWindow = new.bool(false)
 
 local adInput = new.char[256]('')
 local adNick, adPrice, adText = '', '', ''
@@ -50,12 +52,24 @@ local copying = false
 local autoFocus = false
 local hex = '0xEEDC82'
 
+local update_state = false
+local checkVerify = false
+local lockVerify = false
+local lockFailed = false
+local newVersion = 'None'
+
+local update_url = 'https://raw.githubusercontent.com/thechampguess/scripts/master/update.ini' -- тут тоже свою ссылку
+local update_path = getWorkingDirectory() .. '/update_lsn.ini' -- и тут свою ссылку
+local script_vers = tostring(thisScript().version)
+local script_url = 'https://github.com/thechampguess/scripts/blob/master/autoupdate_lesson_16.luac?raw=true' -- тут свою ссылку
+local script_path = thisScript().path
+
 function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
 
 imgui.OnInitialize(function() imgui.DarkTheme(); imgui.GetIO().IniFilename = nil; end)
 
 local newFrame = imgui.OnFrame(
-	function() return mainWindow[0] end,
+	function() return renderWindow[0] end,
 	function(player)
 		local resX, resY = getScreenResolution()
 		local sizeX, sizeY = 700, 340
@@ -133,7 +147,7 @@ local newFrame = imgui.OnFrame(
 
 			elseif Char and Char ~= '$' then
 				sampSendDialogResponse(1536,1,0,(u8:decode(str(adInput))))
-				mainWindow[0] = false
+				renderWindow[0] = false
 				confirm = true
 
 				lua_thread.create(function()
@@ -158,14 +172,8 @@ local newFrame = imgui.OnFrame(
 			else
 				sampSendDialogResponse(1536,0,0,(u8:decode(str(adInput))))
 				
-				mainWindow[0] = false
+				renderWindow[0] = false
 				copying = false
-
-				-- special debug (silience, see will LSN or admins)
-				-- lua_thread.create(function()
-				-- 	list[adText] = (u8:decode(str(adInput)))
-				-- 	json(fileJson):write(list)
-				-- end)
 
 				adNick, adPrice, adText = '', '', ''
 
@@ -190,21 +198,53 @@ function main()
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	--! debug window (dont use)
-	-- sampRegisterChatCommand('dia', function()
-	-- 	mainWindow[0] = true
-	-- 	imgui.StrCopy(adInput, u8(adText))
-	-- 	autoFocus = true
-	-- end)
+	sampRegisterChatCommand('dia', function()
+		renderWindow[0] = not renderWindow[0]
+		imgui.StrCopy(adInput, u8(adText))
+		autoFocus = true
+	end)
+
+	sampRegisterChatCommand('verify', function()
+		if lockVerify then
+			checkVerify = true
+			send('Обновляю '..script_vers ..' -> '..updateIni.info.version..' ...')
+			lockVerify = false
+		end
+	end)
+
+    downloadUrlToFile(update_url, update_path, function(id, status)
+        if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+            updateIni = inicfg.load(nil, update_path)
+            if tonumber(updateIni.info.version) ~= script_vers then
+                newVersion = updateIni.info.version
+                send('Есть обновление! Версия: '..updateIni.info.version..'. Чтобы обновить вводите /verify', -1)
+                update_state = true
+                lockVerify = true
+            end
+            os.remove(update_path)
+        end
+    end)
 	
 	while true do
 		wait(0)
+		if update_state and checkVerify then
+            downloadUrlToFile(script_url, script_path, function(id, status)
+                if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+                    send('Скрипт успешно обновлен! Сейчас будет перезагружен', -1)
+                    lockFailed = true
+                    thisScript():reload()
+                end
+            end)
+            break
+        end
 	end
 end
 
 
+
 function onWindowMessage(msg, wparam, lparam)
 	if msg == 0x100 or msg == 0x101 then
-		if (wparam == (keys.VK_ESCAPE) and (mainWindow[0])) and not isPauseMenuActive() and not sampIsChatInputActive() and not isSampfuncsConsoleActive() then
+		if (wparam == VK_ESCAPE and (renderWindow[0])) and not isPauseMenuActive() and not sampIsChatInputActive() and not isSampfuncsConsoleActive() then
 			consumeWindowMessage(true, false)
 		end
 	end
@@ -216,7 +256,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 		--adN = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
 		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
 		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
-		mainWindow[0] = true
+		renderWindow[0] = true
 		autoFocus = true
 		if list[adText] == nil then
 			imgui.StrCopy(adInput, u8(adText))
@@ -239,7 +279,6 @@ function sampev.onSendDialogResponse(dialogId, button, listboxId, input)
 		local fr = ''; fr, adNick = input:match('(%d+)%. (.*)')
 	end
 end
-
 
 function sampev.onServerMessage(color, text)
 	if color == 2147418282 then
@@ -270,6 +309,7 @@ function sampev.onServerMessage(color, text)
 		send(text)
 		return false
 	end
+
 	if color == -1 and text:find('За опубликованное сообщение вы получили') then
 		TText = text:match('%{008000%}(%d+)$%{ffffff%}')
 		send('За опубликованное сообщение вы получили '..TText..'$ на ваш банк. счёт.')
@@ -281,11 +321,11 @@ function sampev.onServerMessage(color, text)
 
 		return false
 	end
+
 	if color == -1 and (text:find('Вы отклонили объявление') or text:find('Тот, кто подал объявление, покинул сервер')) then
 		send(text)
 		return false
 	end
-
 
 	--! этот код только в самом конце функции
 	if color == 2147418282 and text:find('[News Studio]') then
