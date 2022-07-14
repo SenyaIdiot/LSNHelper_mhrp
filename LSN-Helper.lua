@@ -58,10 +58,10 @@ local lockVerify = false
 local lockFailed = false
 local newVersion = 'None'
 
-local update_url = 'https://raw.githubusercontent.com/thechampguess/scripts/master/update.ini' -- тут тоже свою ссылку
+local update_url = 'hhttps://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini' -- тут тоже свою ссылку
 local update_path = getWorkingDirectory() .. '/update_lsn.ini' -- и тут свою ссылку
 local script_vers = tostring(thisScript().version)
-local script_url = 'https://github.com/thechampguess/scripts/blob/master/autoupdate_lesson_16.luac?raw=true' -- тут свою ссылку
+local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true' -- тут свою ссылку
 local script_path = thisScript().path
 
 function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
@@ -221,7 +221,7 @@ function main()
                 update_state = true
                 lockVerify = true
             end
-            os.remove(update_path)
+            --os.remove(update_path)
         end
     end)
 	
