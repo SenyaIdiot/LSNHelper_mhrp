@@ -266,7 +266,7 @@ function main()
 	if not doesFileExist(adJson) then json(adJson):write({}) end
 	adList = json(adJson):read()
 
-	send('Скрипт успешно загружено | '..thisScript().version)
+	send('Скрипт успешно загружено. Версия: '..thisScript().version)
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	--! debug window (dont use)
@@ -291,9 +291,9 @@ function main()
 	downloadUrlToFile(update_url, update_path, function(id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			updateIni = inicfg.load(nil, update_path)
-			newVersion = tostring(updateIni.info.version)
+			newVersion = tostring(updateIni.info.version):gsub('"', '')
 			oldVersion = tostring(thisScript().version)
-			sampAddChatMessage(newVersion..' -> '..oldVersion, -1)
+			--sampAddChatMessage(newVersion..' -> '..oldVersion, -1)
 			if newVersion ~= oldVersion then
 				send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
 				update_state = true
