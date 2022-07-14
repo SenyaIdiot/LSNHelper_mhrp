@@ -2,7 +2,7 @@ script_name('LSN-Helper')
 script_description('Los Santos News Helper (LSNH) for special project MyHome RP')
 script_author('kyrtion#7310')
 script_properties('work-in-pause')
-script_version('3.1.1')
+script_version('3.3')
 
 require 'lib.moonloader'
 local dlstatus = require('moonloader').download_status
