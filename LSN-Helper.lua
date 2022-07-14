@@ -572,7 +572,7 @@ end
 function onScriptTerminate(s, q)
 	if s == thisScript() then
 		if not lockFailed then
-			send('Что-то пошло не так с скриптом... Отключаем', -1)
+			send('Что-то пошло не так с скриптом... Отключаем, чтобы перезагрузить нажми CTRL + R', -1)
 		end
 		return true
 	end
