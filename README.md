@@ -25,7 +25,9 @@ Cкрипт LSN-Helper специально для проекта MyHome Role Pl
 ![img1](https://user-images.githubusercontent.com/63658002/179123565-4e33ae00-a519-4668-b09c-c113d2540898.png)
 ![img2](https://user-images.githubusercontent.com/63658002/179123482-25f8c4c3-75d0-48aa-95d6-435eed6fe0c2.png)
 
-**Видезапись:** coming soon
+**Видеозапись (кликбательно):**
+
+[![vid1](https://img.youtube.com/vi/6dxjjc33F_Q/0.jpg)](https://youtu.be/6dxjjc33F_Q)
 
 ## Требование
 - **MoonLoader:** v0.26 или новое
