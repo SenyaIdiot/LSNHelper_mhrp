@@ -65,10 +65,18 @@ local lockFailed = false
 local newVersion = 'None'
 local oldVersion = 'None'
 
-local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini'
+-- --! origin/master
+-- local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/master/version_lsn.ini'
+-- local update_path = getWorkingDirectory() .. '/update_lsn.ini'
+-- local script_vers = tostring(thisScript().version)
+-- local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true'
+-- local script_path = thisScript().path
+
+--! origin/beta
+local update_url = 'https://raw.githubusercontent.com/kyrtion/LSNHelper_mhrp/beta/version_lsn.ini'
 local update_path = getWorkingDirectory() .. '/update_lsn.ini'
 local script_vers = tostring(thisScript().version)
-local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/master/LSN-Helper.lua?raw=true'
+local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/beta/LSN-Helper.lua?raw=true'
 local script_path = thisScript().path
 
 function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
