@@ -1,0 +1,27 @@
+
+ MoonLoader v.027.0-preview3 loaded.
+ Developers: FYP, hnnssy, EvgeN 1137
+
+ Copyright (c) 2016, BlastHack Team
+ http://blast.hk/moonloader/
+
+[19:08:30.585804] (debug)	Module handle: 0x5e960000
+[19:08:30.585804] (info)	Working directory: C:\Games\mhrp\bin\SAMP\moonloader
+[19:08:30.585804] (debug)	FP Control: 0x0009001F
+[19:08:30.586792] (debug)	Windows: 10.0.19044 2
+[19:08:30.586792] (debug)	Game: GTA SA 1.0 US 'HoodLum'
+[19:08:30.586792] (system)	Installing pre-game hooks...
+[19:08:30.594787] (system)	Hooks installed.
+[19:08:33.019183] (debug)	Opcode handler table: 0x5edb0a08
+[19:08:33.019183] (debug)	LUA_PATH = C:\Games\mhrp\bin\SAMP\moonloader\libstd\?.lua;C:\Games\mhrp\bin\SAMP\moonloader\libstd\?\init.lua;C:\Games\mhrp\bin\SAMP\moonloader\lib\?.lua;C:\Games\mhrp\bin\SAMP\moonloader\lib\?.luac;C:\Games\mhrp\bin\SAMP\moonloader\lib\?\init.lua;C:\Games\mhrp\bin\SAMP\moonloader\lib\?\init.luac
+[19:08:33.020182] (debug)	LUA_CPATH = C:\Games\mhrp\bin\SAMP\moonloader\libstd\?.dll;C:\Games\mhrp\bin\SAMP\moonloader\lib\?.dll
+[19:08:33.020182] (system)	Loading script "C:\Games\mhrp\bin\SAMP\moonloader\LSN-Helper_v2.lua"...	(id:1)
+[19:08:33.057170] (system)	LSN-Helper: Loaded successfully.
+[19:08:44.178128] (system)	Installing post-load hooks...
+[19:08:44.179128] (system)	Hooks installed.
+[19:08:45.268779] (script)	LSN-Helper: <>
+[19:08:45.268779] (script)	LSN-Helper: <>
+[19:08:45.269779] (script)	LSN-Helper: Script LSN-Helper 1.0 loaded - Discord: kyrtion#7310
+[19:08:48.062886] (system)	Unloading...
+[19:08:48.062886] (system)	LSN-Helper: Script terminated. (id:1)
+[19:08:48.101872] (system)	Session terminated.
