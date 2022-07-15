@@ -52,6 +52,7 @@ local renderWindow = new.bool(false)
 local adInput = new.char[256]('')
 local inputSearch = new.char[256]('')
 local adNick, adPrice, adText = '', '', ''
+local notAdNick = false
 local confirm = false
 local block = false
 local copying = false
@@ -278,11 +279,11 @@ function main()
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	--! debug window (dont use)
-	-- sampRegisterChatCommand('dia', function()
-	-- 	renderWindow[0] = not renderWindow[0]
-	-- 	imgui.StrCopy(adInput, u8(adText))
-	-- 	autoFocus = true
-	-- end)
+	sampRegisterChatCommand('dia', function()
+		renderWindow[0] = not renderWindow[0]
+		imgui.StrCopy(adInput, u8(adText))
+		autoFocus = true
+	end)
 
 	sampRegisterChatCommand('verify', function()
 		if lockVerify then
@@ -338,8 +339,12 @@ end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
 	if id == 1536 and title == '{6333FF}Публикация объявления' then
-		--local adN = ''
-		--adN = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
+		if notAdNick then
+			adNick = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
+			notAdNick = false
+			send('Вы не обновили актуальный диалог для редактирования объявление, ID отправителя не будет показан.')
+			send('В следующий раз когда появится сообщение /edit, вводите команды только без диалога!')
+		end
 		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
 		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
 		renderWindow[0] = true
@@ -362,7 +367,11 @@ end
 
 function sampev.onSendDialogResponse(dialogId, button, listboxId, input)
 	if dialogId == 1000 and button == 1 then
-		local fr = ''; fr, adNick = input:match('(%d+)%. (.*)')
+		if input:find('-') then
+			notAdNick = true
+		else
+			local fr = ''; fr, adNick = input:match('(%d+)%. (.*)')
+		end
 	end
 end
 
