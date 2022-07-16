@@ -403,7 +403,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 		if editList[adText] == nil then
 			imgui.StrCopy(adInput, u8(adText))
 			copying = false
-		else	
+		else
 			imgui.StrCopy(adInput, u8(editList[adText]))
 			copying = true
 		end
