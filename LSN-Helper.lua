@@ -47,7 +47,7 @@ local editList = {}
 local adList = {}
 
 local new, str, sizeof = imgui.new, ffi.string, ffi.sizeof
-local renderWindow = new.bool(true)
+local renderWindow = new.bool(false)
 local menuWindow = new.bool(false)
 local tab = new.int(1)
 local adInput = new.char[256]('')
