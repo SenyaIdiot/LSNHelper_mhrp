@@ -41,5 +41,6 @@ Cкрипт LSN-Helper специально для проекта MyHome Role Pl
 
 ## Автор скрипта
 - Martin Sonnet aka kyrtion
-- VK: https://vk.com/kyrtion
+- Telegram: https://t.me/kyrtion
+- VKontakte: https://vk.com/kyrtion
 - Discord: kyrtion#7310
