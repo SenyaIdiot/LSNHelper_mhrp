@@ -10,7 +10,7 @@ local dlstatus = require('moonloader').download_status
 if not doesDirectoryExist('moonloader/config') then createDirectory('moonloader/config') end
 if not doesDirectoryExist('moonloader/config/LSN-Helper') then createDirectory ('moonloader/config/LSN-Helper') end
 
-local imgui = require 'mimgui' -- С‚РµРїРµСЂСЊ РјРёРјРіСѓР№, Р° РЅРµ РёРјРіСѓР№...
+local imgui = require 'mimgui' -- теперь мимгуй, а не имгуй...
 local encoding = require 'encoding'
 local ffi = require 'ffi'
 local sampev = require 'lib.samp.events'
@@ -80,7 +80,7 @@ local script_path = thisScript().path
 -- local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/beta/LSN-Helper.lua?raw=true'
 -- local script_path = thisScript().path
 
-function send(result) sampAddChatMessage('LSN-Helper В» '.. result, 0xEEDC82) end
+function send(result) sampAddChatMessage('LSN-Helper » '.. result, 0xEEDC82) end
 
 imgui.OnInitialize(function() imgui.DarkTheme(); imgui.GetIO().IniFilename = nil; end)
 
@@ -91,9 +91,9 @@ local newFrame = imgui.OnFrame(
 		local sizeX, sizeY = 700, 340
 		imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY * 1.04))
-		imgui.Begin(u8'РџСѓР±Р»РёРєР°С†РёСЏ oР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version, nil, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
+		imgui.Begin(u8'Публикация oбъявления | LSN-Helper '..thisScript().version, nil, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
 
-		imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('РћС‚РїСЂР°РІРёС‚РµР»СЊ:'); imgui.SameLine((sizeX - 15) / 2 + 10); imgui.TextColoredRGB('Р¦РµРЅР°:')
+		imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('Отправитель:'); imgui.SameLine((sizeX - 15) / 2 + 10); imgui.TextColoredRGB('Цена:')
 		imgui.SetCursorPos(imgui.ImVec2(20, 60));
 		imgui.BeginChild('ChildWindows1', imgui.ImVec2(sizeX - 372, 25), true)
 		imgui.TextColoredRGB('{FFFFFF}' .. adNick)
@@ -105,7 +105,7 @@ local newFrame = imgui.OnFrame(
 		imgui.EndChild()
 		
 		imgui.SetCursorPos(imgui.ImVec2(20, 100))
-		imgui.TextColoredRGB('РўРµРєСЃС‚:')
+		imgui.TextColoredRGB('Текст:')
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 120))
 		imgui.BeginChild('ChildWindows3', imgui.ImVec2(sizeX - 40, 25), true)
@@ -113,14 +113,14 @@ local newFrame = imgui.OnFrame(
 		imgui.EndChild()
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 165))
-		imgui.TextColoredRGB('Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ С‚РµРєСЃС‚ РґР»СЏ СЌС‚РѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ. РќРѕ РЅРµ РѕСЃС‚Р°РІСЊС‚Рµ РїРѕР»Рµ РїСѓСЃС‚С‹Рј!')
+		imgui.TextColoredRGB('Введите новый текст для этого объявления. Но не оставьте поле пустым!')
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 180))
-		imgui.TextColoredRGB('Р’С‹ С‚Р°Рє-Р¶Рµ РјРѕР¶РµС‚Рµ РѕС‚РєР»РѕРЅРёС‚СЊ РѕР±СЉСЏРІР»РµРЅРёРµ СЃ РЅР°РїРёСЃР°РЅРЅРѕР№ РІ РїРѕР»Рµ РїСЂРёС‡РёРЅРѕР№ Рё РЅР°Р¶Р°РІ РїРѕСЃР»Рµ РєРЅРѕРїРєСѓ "РћС‚РєР»РѕРЅРёС‚СЊ".')
+		imgui.TextColoredRGB('Вы так-же можете отклонить объявление с написанной в поле причиной и нажав после кнопку "Отклонить".')
 
 		if copying then
 			imgui.SetCursorPos(imgui.ImVec2(20, 210))
-			imgui.TextColoredRGB('{FFAA00}РўРµРєСЃС‚ СЃРѕРІРїР°РґР°РµС‚ РѕРґРЅРѕР№ Рё С‚РѕР¶Рµ, СЃРєРѕРїРёСЂРѕРІР°РЅРѕ РІ РїСЂРѕС€Р»РѕРј СЂР°Р·. РџСЂРѕРІРµСЂСЊС‚Рµ, РІСЃС‘ РїСЂР°РІРёР»СЊРЅРѕ Р»Рё РЅР°РїРёСЃР°РЅРѕ.')
+			imgui.TextColoredRGB('{FFAA00}Текст совпадает одной и тоже, скопировано в прошлом раз. Проверьте, всё правильно ли написано.')
 		end
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 110))
@@ -135,9 +135,9 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.34, 0.42, 0.51, 1.0))
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.34, 0.42, 0.51, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.34, 0.42, 0.51, 0.8))
-		if imgui.Button(u8'РџРµСЂРµРґР°С‚СЊ РІ /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'Передать в /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(adText)) == (nil or '') then
-				send('Р’ С‚РµРєСЃС‚Рµ РїСѓСЃС‚Рѕ, Р·Р°С‡РµРј СЃРѕРѕР±С‰Р°С‚СЊ?', -1)
+				send('В тексте пусто, зачем сообщать?', -1)
 			else
 				sampSendChat('/rb '.. adNick .. ' (' .. adPrice .. '): '.. adText)
 			end
@@ -145,18 +145,18 @@ local newFrame = imgui.OnFrame(
 		imgui.PopStyleColor(3)
 
 		imgui.SameLine((sizeX - 17) / 2 + 10)
-		if imgui.Button(u8'РџРѕРёСЃРє', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
-			imgui.OpenPopup(u8'РџРѕРёСЃРє')
+		if imgui.Button(u8'Поиск', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+			imgui.OpenPopup(u8'Поиск')
 		end
 
-		if imgui.BeginPopupModal(u8'РџРѕРёСЃРє', _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
+		if imgui.BeginPopupModal(u8'Поиск', _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
 			local pSize = imgui.ImVec2(770, 400)
 			imgui.SetWindowSizeVec2(pSize)
 			
 			imgui.SetCursorPos(imgui.ImVec2(20, 45))
-			imgui.Text(u8'РўРµРєСЃС‚:') imgui.SameLine(70) imgui.TextColoredRGB(adText)
+			imgui.Text(u8'Текст:') imgui.SameLine(70) imgui.TextColoredRGB(adText)
 			
-			imgui.SetCursorPos(imgui.ImVec2(20, 70)) imgui.Text(u8'РџРѕРёСЃРє:')
+			imgui.SetCursorPos(imgui.ImVec2(20, 70)) imgui.Text(u8'Поиск:')
 			
 			imgui.SetCursorPos(imgui.ImVec2(70, 66))
 			imgui.PushItemWidth(pSize.x/2 + 294)
@@ -168,7 +168,7 @@ local newFrame = imgui.OnFrame(
 			imgui.PopItemWidth()
 			
 			imgui.SetCursorPos(imgui.ImVec2(21, 108))
-			imgui.Text(u8'Р РµР·СѓР»СЊС‚Р°С‚С‹:')
+			imgui.Text(u8'Результаты:')
 			
 			imgui.SetCursorPos(imgui.ImVec2(20, 130))
 			imgui.BeginChild('ChildWindowsS', imgui.ImVec2(pSize.x/2 + 344, pSize.y/2 + 12), true)
@@ -263,7 +263,7 @@ local newFrame = imgui.OnFrame(
 			imgui.EndChild()
 
 			imgui.SetCursorPos(imgui.ImVec2(20, pSize.y - 42))
-			if imgui.Button(u8'Р—Р°РєСЂС‹С‚СЊ', imgui.ImVec2(pSize.x/2 + 344, 25)) then
+			if imgui.Button(u8'Закрыть', imgui.ImVec2(pSize.x/2 + 344, 25)) then
 				searchInput = new.char[256]('')
 				imgui.CloseCurrentPopup()
 			end
@@ -275,12 +275,12 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 1.0))
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.2, 0.77, 0.33, 0.8))
-		if imgui.Button(u8'РћРїСѓР±Р»РёРєРѕРІР°С‚СЊ', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'Опубликовать', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			local tempText = (u8:decode(str(adInput)))
 			local Char = tempText:match('.*(%p)$')
 			
 			if (u8:decode(str(adInput))) == (nil or '') then
-				send('Р’ С‚РµРєСЃС‚Рµ РїСѓСЃС‚Рѕ, Р·Р°С‡РµРј РѕС‚РїСЂР°РІР»СЏС‚СЊ?')
+				send('В тексте пусто, зачем отправлять?')
 			elseif Char == '.' or Char == '?' or Char == '!' then
 				renderWindow[0] = false
 				sampSendDialogResponse(1536, 1, 0, (u8:decode(str(adInput))))
@@ -299,7 +299,7 @@ local newFrame = imgui.OnFrame(
 				adNick, adPrice, adText = '', '', ''
 				copying = false
 			else
-				send('Р’С‹ РЅРµ СЃС‚Р°РІРёР»Рё РІ РєРѕРЅС†Рµ Р·РЅР°РєРё РїСЂРµРїРёРЅР°РЅРёРµ')
+				send('Вы не ставили в конце знаки препинание')
 				--send('<'..Char..'>')
 			end
 		end
@@ -309,9 +309,9 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(1.00, 0.25, 0.25, 0.8))
 		imgui.SameLine((sizeX - 17) / 2 + 10)
-		if imgui.Button(u8'РћС‚РєР»РѕРЅРёС‚СЊ', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'Отклонить', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
-				send('Р’С‹ РЅРµ СѓРєР°Р·Р°Р»Рё РїСЂРёС‡РёРЅСѓ РІ РїРѕР»Рµ')
+				send('Вы не указали причину в поле')
 			else
 				renderWindow[0] = false
 				sampSendDialogResponse(1536, 0, 0, (u8:decode(str(adInput))))
@@ -333,27 +333,27 @@ local menuFrame = imgui.OnFrame(
 		local sizeX, sizeY = 960, 400
 		imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY), imgui.Cond.FirstUseEver)
-		imgui.Begin(u8'РњРµРЅСЋ | LSN-Helper '..tostring(thisScript().version), menuWindow, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
+		imgui.Begin(u8'Меню | LSN-Helper '..tostring(thisScript().version), menuWindow, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
 		
 		local csbutt = imgui.ImVec2(sizeX - 647, 25)
-		if imgui.Button(u8'Р“Р»Р°РІРЅР°СЏ', csbutt) then tab[0] = 1 end
+		if imgui.Button(u8'Главная', csbutt) then tab[0] = 1 end
 		imgui.SameLine()
 		--
-		if imgui.Button(u8'Р“РѕС‚РѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ', csbutt) then tab[0] = 2 end
+		if imgui.Button(u8'Готовое объявление', csbutt) then tab[0] = 2 end
 		imgui.SameLine()
 		--
-		if imgui.Button(u8'Р›РѕРіРё', csbutt) then tab[0] = 3 end
+		if imgui.Button(u8'Логи', csbutt) then tab[0] = 3 end
 
 		local childSize = sizeX - 100
 		imgui.SetCursorPos(imgui.ImVec2(5, 65))
 		imgui.BeginChild('menushka', imgui.ImVec2(sizeX - 10, sizeY - 70), true)
-		if tab[0] == 1 then -- Р Р°Р·РґРµР» "РќР°СЃС‚СЂРѕР№РєР°"
+		if tab[0] == 1 then -- Раздел "Настройка"
 			imgui.SetCursorPos(imgui.ImVec2(5, 8))
-			imgui.TextColoredRGB('РљР»Р°СЃСЃРЅР°СЏ РЅР°СЃС‚СЂРѕР№РєР°. Coming soon...')
+			imgui.TextColoredRGB('Классная настройка. Coming soon...')
 
-		elseif tab[0] == 2 then -- Р Р°Р·РґРµР» "Р“РѕС‚РѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ"
+		elseif tab[0] == 2 then -- Раздел "Готовое объявление"
 			imgui.SetCursorPos(imgui.ImVec2(5, 8))
-			imgui.Text(u8'РџРѕРёСЃРє: ')
+			imgui.Text(u8'Поиск: ')
 
 			imgui.SetCursorPos(imgui.ImVec2(50, 5))
 			imgui.PushItemWidth(sizeX - 370)
@@ -369,57 +369,57 @@ local menuFrame = imgui.OnFrame(
 						if string.find(u8(editList[i].old_text), str(searchSelf), 1, true) or string.find(u8(editList[i].new_text), str(searchSelf), 1, true) then
 							imgui.Columns(2)
 							if imgui.Selectable(u8'EDIT##'..tonumber(i), true, _, sbutt) then
-								imgui.OpenPopup(u8'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version)
+								imgui.OpenPopup(u8'Редактирование готового объявления | LSN-Helper '..thisScript().version)
 								idNew = i
 								newTextInput = new.char[256](u8(editList[i].old_text))
 								newTextUpdInput = new.char[256](u8(editList[i].new_text))
 							end
 							if imgui.Selectable(u8'DELETE##'..tonumber(i), true, _, sbutt) then
-								imgui.OpenPopup(u8'РЈРґР°Р»РµРЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version)
+								imgui.OpenPopup(u8'Удаление готового объявления | LSN-Helper '..thisScript().version)
 								idDel = i
 								delText = editList[i].old_text
 								delNewText = editList[i].new_text
 							end
 							imgui.SetColumnWidth(0, 60)
 							imgui.NextColumn()
-							imgui.TextColoredRGB('{ffffff}РЎС‚Р°СЂС‹Р№ {68E625}$ {ffffff}'..editList[i].old_text)
-							imgui.TextColoredRGB('{ffffff}РќРѕРІС‹Р№ {68E625}$ {ffffff}'..editList[i].new_text)
+							imgui.TextColoredRGB('{ffffff}Старый {68E625}$ {ffffff}'..editList[i].old_text)
+							imgui.TextColoredRGB('{ffffff}Новый {68E625}$ {ffffff}'..editList[i].new_text)
 							imgui.NextColumn()
 							imgui.Separator()
 						end
 					else
 						imgui.Columns(2)
 						if imgui.Selectable(u8'EDIT##'..tonumber(i), true, _, sbutt) then
-							imgui.OpenPopup(u8'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version)
+							imgui.OpenPopup(u8'Редактирование готового объявления | LSN-Helper '..thisScript().version)
 							idNew = i
 							newTextInput = new.char[256](u8(editList[i].old_text))
 							newTextUpdInput = new.char[256](u8(editList[i].new_text))
 						end
 						if imgui.Selectable(u8'DELETE##'..tonumber(i), true, _, sbutt) then
-							imgui.OpenPopup(u8'РЈРґР°Р»РµРЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version)
+							imgui.OpenPopup(u8'Удаление готового объявления | LSN-Helper '..thisScript().version)
 							idDel = i
 							delText = editList[i].old_text
 							delNewText = editList[i].new_text
 						end
 						imgui.SetColumnWidth(0, 60)
 						imgui.NextColumn()
-						imgui.TextColoredRGB('{ffffff}РЎС‚Р°СЂС‹Р№ {68E625}$ {ffffff}'..editList[i].old_text)
-						imgui.TextColoredRGB('{ffffff}РќРѕРІС‹Р№ {68E625}$ {ffffff}'..editList[i].new_text)
+						imgui.TextColoredRGB('{ffffff}Старый {68E625}$ {ffffff}'..editList[i].old_text)
+						imgui.TextColoredRGB('{ffffff}Новый {68E625}$ {ffffff}'..editList[i].new_text)
 						imgui.NextColumn()
 						imgui.Separator()
 					end
 				--end
 			end
-			if imgui.BeginPopupModal(u8'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
+			if imgui.BeginPopupModal(u8'Редактирование готового объявления | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
 				local sizeX, sizeY = 800, 155; local vecs = imgui.ImVec2(sizeX, sizeY); imgui.SetWindowSizeVec2(vecs)
 
-				imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('{ffffff}РЎС‚Р°СЂС‹Р№ {68E625}${ffffff}')
+				imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('{ffffff}Старый {68E625}${ffffff}')
 				imgui.SetCursorPos(imgui.ImVec2(78, 37)); imgui.PushItemWidth(sizeX - 99); imgui.InputText(u8'##newTextInput', newTextInput, sizeof(newTextInput)); imgui.PopItemWidth()
-				imgui.SetCursorPos(imgui.ImVec2(24, 70)); imgui.TextColoredRGB('{ffffff}РќРѕРІС‹Р№ {68E625}${ffffff}')
+				imgui.SetCursorPos(imgui.ImVec2(24, 70)); imgui.TextColoredRGB('{ffffff}Новый {68E625}${ffffff}')
 				imgui.SetCursorPos(imgui.ImVec2(78, 67)); imgui.PushItemWidth(sizeX - 99); imgui.InputText(u8'##newTextUpdInput', newTextUpdInput, sizeof(newTextUpdInput)); imgui.PopItemWidth()
 	
 				imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 45))
-				if imgui.Button(u8'Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ', imgui.ImVec2(sizeX/2 - 23, 25)) then
+				if imgui.Button(u8'Редактировать', imgui.ImVec2(sizeX/2 - 23, 25)) then
 					editList[idNew].old_text = u8:decode(str(newTextInput))
 					editList[idNew].new_text = u8:decode(str(newTextUpdInput))
 					editList[idNew].date = os.date('%Y.%m.%d %X')
@@ -431,30 +431,30 @@ local menuFrame = imgui.OnFrame(
 				end
 				imgui.SameLine()
 				--
-				if imgui.Button(u8'Р—Р°РєСЂС‹С‚СЊ', imgui.ImVec2(sizeX/2 - 23, 25)) then
+				if imgui.Button(u8'Закрыть', imgui.ImVec2(sizeX/2 - 23, 25)) then
 					imgui.CloseCurrentPopup()
 				end
 				imgui.EndPopup()
 			end
-			if imgui.BeginPopupModal(u8'РЈРґР°Р»РµРЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
+			if imgui.BeginPopupModal(u8'Удаление готового объявления | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
 				local pSize = imgui.ImVec2(900, 160)
 				imgui.SetWindowSizeVec2(pSize)
 		
 				imgui.SetCursorPos(imgui.ImVec2(20, 40))
-				imgui.TextColoredRGB('{ffffff}РЎС‚Р°СЂС‹Р№ {68E625}$ {ffffff}'..delText)
+				imgui.TextColoredRGB('{ffffff}Старый {68E625}$ {ffffff}'..delText)
 
 				imgui.SetCursorPos(imgui.ImVec2(20, 55))
-				imgui.TextColoredRGB('{ffffff}РќРѕРІС‹Р№ {68E625}$ {ffffff}'..delNewText)
+				imgui.TextColoredRGB('{ffffff}Новый {68E625}$ {ffffff}'..delNewText)
 					
 				imgui.SetCursorPos(imgui.ImVec2(20, 80))
-				imgui.Text(u8'Р’С‹ С‚РѕС‡РЅРѕ С…РѕС‚РёС‚Рµ СЌС‚Рѕ СѓРґР°Р»РёС‚СЊ?')
+				imgui.Text(u8'Вы точно хотите это удалить?')
 	
 				imgui.SetCursorPos(imgui.ImVec2(20, pSize.y - 45))
 				local but = imgui.ImVec2((pSize.x/2) - 23, 25)
 				imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 1.0))
 				imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.9))
 				imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.2, 0.77, 0.33, 0.8))
-				if imgui.Button(u8'Р”Р°', but) then
+				if imgui.Button(u8'Да', but) then
 					table.remove(editList, idDel)
 					--table.sort(editList, function(a,b) return a.date > b.date end)
 					json(editJson):write(editList)
@@ -466,7 +466,7 @@ local menuFrame = imgui.OnFrame(
 				imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(1.00, 0.25, 0.25, 1.0))
 				imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.9))
 				imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(1.00, 0.25, 0.25, 0.8))
-				if imgui.Button(u8'РќРµС‚', but) then
+				if imgui.Button(u8'Нет', but) then
 					imgui.CloseCurrentPopup()
 				end
 				imgui.PopStyleColor(3)
@@ -477,21 +477,21 @@ local menuFrame = imgui.OnFrame(
 			imgui.SetCursorPos(imgui.ImVec2(sizeX/2 + 165, 5))
 			local smbutt = imgui.ImVec2(sizeX/3 - 20, 24)
 
-			if imgui.Button(u8'РЎРѕР·РґР°С‚СЊ РіРѕС‚РѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ', smbutt) then
-				imgui.OpenPopup(u8'РЎРѕР·РґР°РЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version)
+			if imgui.Button(u8'Создать готовое объявление', smbutt) then
+				imgui.OpenPopup(u8'Создание готового объявления | LSN-Helper '..thisScript().version)
 				newTextInput = new.char[256]('')
 				newTextUpdInput = new.char[256]('')
 			end
-			if imgui.BeginPopupModal(u8'РЎРѕР·РґР°РЅРёРµ РіРѕС‚РѕРІРѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
+			if imgui.BeginPopupModal(u8'Создание готового объявления | LSN-Helper '..thisScript().version, _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
 				local sizeX, sizeY = 800, 155; local vecs = imgui.ImVec2(sizeX, sizeY); imgui.SetWindowSizeVec2(vecs)
 
-				imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('{ffffff}РЎС‚Р°СЂС‹Р№ {68E625}${ffffff}')
+				imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('{ffffff}Старый {68E625}${ffffff}')
 				imgui.SetCursorPos(imgui.ImVec2(78, 37)); imgui.PushItemWidth(sizeX - 99); imgui.InputText(u8'##newTextInput', newTextInput, sizeof(newTextInput)); imgui.PopItemWidth()
-				imgui.SetCursorPos(imgui.ImVec2(24, 70)); imgui.TextColoredRGB('{ffffff}РќРѕРІС‹Р№ {68E625}${ffffff}')
+				imgui.SetCursorPos(imgui.ImVec2(24, 70)); imgui.TextColoredRGB('{ffffff}Новый {68E625}${ffffff}')
 				imgui.SetCursorPos(imgui.ImVec2(78, 67)); imgui.PushItemWidth(sizeX - 99); imgui.InputText(u8'##newTextUpdInput', newTextUpdInput, sizeof(newTextUpdInput)); imgui.PopItemWidth()
 
 				imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 45))
-				if imgui.Button(u8'РЎРѕР·РґР°С‚СЊ', imgui.ImVec2(sizeX/2 - 23, 25)) then
+				if imgui.Button(u8'Создать', imgui.ImVec2(sizeX/2 - 23, 25)) then
 					local list = {
 						date = os.date('%Y.%m.%d %X'),
 						player = 'Script Helper',
@@ -506,16 +506,16 @@ local menuFrame = imgui.OnFrame(
 				end
 				imgui.SameLine()
 				--
-				if imgui.Button(u8'Р—Р°РєСЂС‹С‚СЊ', imgui.ImVec2(sizeX/2 - 23, 25)) then
+				if imgui.Button(u8'Закрыть', imgui.ImVec2(sizeX/2 - 23, 25)) then
 					imgui.CloseCurrentPopup()
 				end
 
 				imgui.EndPopup()
 			end
 
-		elseif tab[0] == 3 then -- Р Р°Р·РґРµР» "Р›РѕРіРё"
+		elseif tab[0] == 3 then -- Раздел "Логи"
 			imgui.SetCursorPos(imgui.ImVec2(5, 8))
-			imgui.Text(u8'РџРѕРёСЃРє:')
+			imgui.Text(u8'Поиск:')
 
 			imgui.SetCursorPos(imgui.ImVec2(50, 5))
 			imgui.PushItemWidth(sizeX - 65)
@@ -538,20 +538,20 @@ local menuFrame = imgui.OnFrame(
 						if imgui.Selectable(u8'COPY##'..tonumber(i), true, _, sbutt) then
 							local clipboard = ('['..logList[i].date..'] '..logList[i].text..'\n['..logList[i].date..'] '..logList[i].employee)
 							setClipboardText(clipboard)
-							send('РЎРєРѕРїРёСЂРѕРІР°РЅРѕ 2 СЃС‚СЂРѕРєР°, С‡С‚РѕР±С‹ РІСЃС‚Р°РІРёС‚СЊ РЅР°Р¶РјРёС‚Рµ CTRL + V')
+							send('Скопировано 2 строка, чтобы вставить нажмите CTRL + V')
 						end
 
-						if imgui.Selectable(u8'/RB [РўРµРє]##'..tonumber(i), true, _, sbutt) then
-							sampSendChat('/rb << Р›РѕРіРё ['..tostring(i)..'] >> '..logList[i].text)
+						if imgui.Selectable(u8'/RB [Тек]##'..tonumber(i), true, _, sbutt) then
+							sampSendChat('/rb << Логи ['..tostring(i)..'] >> '..logList[i].text)
 						end
 
-						if imgui.Selectable(u8'/RB [РЎРѕС‚]##'..tonumber(i), true, _, sbutt) then
-							sampSendChat('/rb << Р›РѕРіРё ['..tostring(i)..'] >> '..logList[i].employee)
+						if imgui.Selectable(u8'/RB [Сот]##'..tonumber(i), true, _, sbutt) then
+							sampSendChat('/rb << Логи ['..tostring(i)..'] >> '..logList[i].employee)
 						end
 
 						imgui.SetColumnWidth(0, 60)
 						imgui.NextColumn()
-						imgui.TextDisabled(u8('Р”Р°С‚Р°: '..logList[i].date))
+						imgui.TextDisabled(u8('Дата: '..logList[i].date))
 						imgui.Text(u8(logList[i].text))
 						imgui.Text(u8(logList[i].employee))
 						imgui.NextColumn()
@@ -562,20 +562,20 @@ local menuFrame = imgui.OnFrame(
 					if imgui.Selectable(u8'COPY##'..tonumber(i), true, _, sbutt) then
 						local clipboard = ('['..logList[i].date..'] '..logList[i].text..'\n['..logList[i].date..'] '..logList[i].employee)
 						setClipboardText(clipboard)
-						send('РЎРєРѕРїРёСЂРѕРІР°РЅРѕ 2 СЃС‚СЂРѕРєР°, С‡С‚РѕР±С‹ РІСЃС‚Р°РІРёС‚СЊ РЅР°Р¶РјРёС‚Рµ CTRL + V')
+						send('Скопировано 2 строка, чтобы вставить нажмите CTRL + V')
 					end
 	
-					if imgui.Selectable(u8'/RB [РўРµРє]##'..tonumber(i), true, _, sbutt) then
-						sampSendChat('/rb << Р›РѕРіРё ['..tostring(i)..'] >> '..logList[i].text)
+					if imgui.Selectable(u8'/RB [Тек]##'..tonumber(i), true, _, sbutt) then
+						sampSendChat('/rb << Логи ['..tostring(i)..'] >> '..logList[i].text)
 					end
 	
-					if imgui.Selectable(u8'/RB [РЎРѕС‚]##'..tonumber(i), true, _, sbutt) then
-						sampSendChat('/rb << Р›РѕРіРё ['..tostring(i)..'] >> '..logList[i].employee)
+					if imgui.Selectable(u8'/RB [Сот]##'..tonumber(i), true, _, sbutt) then
+						sampSendChat('/rb << Логи ['..tostring(i)..'] >> '..logList[i].employee)
 					end
 	
 					imgui.SetColumnWidth(0, 60)
 					imgui.NextColumn()
-					imgui.TextDisabled(u8('Р”Р°С‚Р°: '..logList[i].date))
+					imgui.TextDisabled(u8('Дата: '..logList[i].date))
 					imgui.Text(u8(logList[i].text))
 					imgui.Text(u8(logList[i].employee))
 					imgui.NextColumn()
@@ -595,7 +595,7 @@ function main()
 	if not doesFileExist(adJson) then json(adJson):write({}) end; adList = json(adJson):read()
 	if not doesFileExist(logJson) then json(logJson):write({}) end; logList = json(logJson):read()
 
-	send('РЎРєСЂРёРїС‚ СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅРѕ. Р’РµСЂСЃРёСЏ: '..thisScript().version..'. РљРѕРјР°РЅРґР°: /lsn_menu')
+	send('Скрипт успешно загружено. Версия: '..thisScript().version..'. Команда: /lsn_menu')
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	-- --! debug window (dont use)
@@ -607,17 +607,17 @@ function main()
 	sampRegisterChatCommand('lsn_verify', function()
 		if lockVerify then
 			if renderWindow[0] or sampIsDialogActive() then			
-				send('Р—Р°РєСЂРѕР№С‚Рµ РґРёР°Р»РѕРі Рё СЃРЅРѕРІР° РІРІРѕРґРёС‚Рµ /lsn_verify')
+				send('Закройте диалог и снова вводите /lsn_verify')
 			else
 				checkVerify = true
-				send('РћР±РЅРѕРІР»СЏСЋ '..oldVersion ..' -> '..newVersion..' ...')
+				send('Обновляю '..oldVersion ..' -> '..newVersion..' ...')
 				lockVerify = false
 			end
 		end
 	end)
 
 	sampRegisterChatCommand('lsn_menu', function()
-		if not renderWindow[0] then menuWindow[0] = not menuWindow[0] else send('РЎРЅР°С‡Р°Р»Р° Р·Р°РєР°РЅС‡РёРІР°Р№С‚Рµ СЃ РѕР±СЉСЏРІР»РµРЅРёРµРј, Р·Р°С‚РµРј РІРЅРѕРІ РІРІРѕРґРёС‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РєРѕРјР°РЅРґС‹') end
+		if not renderWindow[0] then menuWindow[0] = not menuWindow[0] else send('Сначала заканчивайте с объявлением, затем внов вводите повторно команды') end
 	end)
 
 	downloadUrlToFile(update_url, update_path, function(id, status)
@@ -627,13 +627,13 @@ function main()
 				newVersion = tostring(updateIni.info.version):gsub('"', '')
 				oldVersion = tostring(thisScript().version)
 				if newVersion ~= oldVersion then
-					send('Р•СЃС‚СЊ РѕР±РЅРѕРІР»РµРЅРёРµ! Р’РµСЂСЃРёСЏ: '..newVersion..'. Р§С‚РѕР±С‹ РѕР±РЅРѕРІРёС‚СЊ РІРІРѕРґРёС‚Рµ /lsn_verify')
+					send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /lsn_verify')
 					update_state = true
 					lockVerify = true
 				end
 				os.remove(update_path)
 			else
-				send('РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ РЅР°Р»РёС‡РёРµ РѕР±РЅРѕРІР»РµРЅРёРµ. РќР°Р¶РјРёС‚Рµ CTRL + R С‡С‚РѕР±С‹ РїРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ')
+				send('Невозможно проверить наличие обновление. Нажмите CTRL + R чтобы перезагрузить')
 			end
 		end
 	end)
@@ -643,7 +643,7 @@ function main()
 		if update_state and checkVerify then
 			downloadUrlToFile(script_url, script_path, function(id, status)
 				if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-					send('РЎРєСЂРёРїС‚ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ! РЎРµР№С‡Р°СЃ Р±СѓРґРµС‚ РїРµСЂРµР·Р°РіСЂСѓР¶РµРЅ')
+					send('Скрипт успешно обновлен! Сейчас будет перезагружен')
 					lockFailed = true
 					thisScript():reload()
 				end
@@ -662,15 +662,15 @@ function onWindowMessage(msg, wparam, lparam)
 end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
-	if id == 1536 and title == '{6333FF}РџСѓР±Р»РёРєР°С†РёСЏ РѕР±СЉСЏРІР»РµРЅРёСЏ' then
+	if id == 1536 and title == '{6333FF}Публикация объявления' then
 		if notAdNick then
-			adNick = ( text:match('%{ffffff%}РћС‚РїСЂР°РІРёС‚РµР»СЊ%: %{7FFF00%}(%w+ %w+)') ):gsub('\n', '')
+			adNick = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub('\n', '')
 			notAdNick = false
-			send('Р’С‹ РЅРµ РѕР±РЅРѕРІРёР»Рё Р°РєС‚СѓР°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РѕР±СЉСЏРІР»РµРЅРёРµ, ID РѕС‚РїСЂР°РІРёС‚РµР»СЏ РЅРµ Р±СѓРґРµС‚ РїРѕРєР°Р·Р°РЅ.')
-			send('Р’ СЃР»РµРґСѓСЋС‰РёР№ СЂР°Р· РєРѕРіРґР° РїРѕСЏРІРёС‚СЃСЏ СЃРѕРѕР±С‰РµРЅРёРµ /edit, РІРІРѕРґРёС‚Рµ РєРѕРјР°РЅРґС‹ С‚РѕР»СЊРєРѕ Р±РµР· РґРёР°Р»РѕРіР°!')
+			send('Вы не обновили актуальный диалог для редактирования объявление, ID отправителя не будет показан.')
+			send('В следующий раз когда появится сообщение /edit, вводите команды только без диалога!')
 		end
-		adText = ( text:match('%{ffffff%}РўРµРєСЃС‚%:%{7FFF00%} (.*)%{ffffff%}') ):gsub('\n', '')
-		adPrice = ( text:match('%{ffffff%}Р¦РµРЅР°%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub('\n', '')
+		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub('\n', '')
+		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub('\n', '')
 		renderWindow[0] = true
 		for i=1, #editList do
 			if editList[i].old_text == adText then
@@ -684,7 +684,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 		end
 		return false
 
-	elseif id == 1537 and title == '{6333FF}РџСѓР±Р»РёРєР°С†РёСЏ РѕР±СЉСЏРІР»РµРЅРёСЏ: {ffffff}РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ' and confirm then
+	elseif id == 1537 and title == '{6333FF}Публикация объявления: {ffffff}Подтверждение' and confirm then
 		sampSendDialogResponse(1537, 1, 0, 0)
 		confirm = false
 		return false
@@ -713,33 +713,33 @@ local newsLockText = false
 
 function sampev.onServerMessage(color, text)
 	if color == 2147418282 then
-		if text:find('РЅРѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ РЅР° РїСЂРѕРІРµСЂРєСѓ') then
+		if text:find('новое объявление на проверку') then
 			--printStyledString('/edit', 5000, 4)
 			send(text)
 			return false
-		elseif text:find('Р·Р°РїСЂРѕСЃРёР» РѕС‚РєР°Р· РЅР° РїСѓР±Р»РёРєР°С†РёСЋ') then
+		elseif text:find('запросил отказ на публикацию') then
 			send(text)
 			return false
 		end
 	end
 
-	if color == -1616928769 and (text == 'РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РѕС‚РєСЂС‹С‚СЊ РёРЅРІРµРЅС‚Р°СЂСЊ, РЅР°Р¶РјРёС‚Рµ \'Y\'' or
-								 text == 'РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРѕРІР°С‚СЊ СЃ Р±РѕС‚РѕРј/РёРіСЂРѕРєРѕРј, РЅР°Р¶РјРёС‚Рµ \'РїСЂ. РєРЅРѕРїРєР° РјС‹С€Рё\' + \'H\'' or
-								 text == 'РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РѕС‚РєСЂС‹С‚СЊ Р±Р°РіР°Р¶РЅРёРє РјР°С€РёРЅС‹, РЅР°Р¶РјРёС‚Рµ \'РїСЂ. РєРЅРѕРїРєР° РјС‹С€Рё\' + \'РџСЂС‹Р¶РѕРє\'' or
-								 text == 'РџРѕРґСЃРєР°Р·РєР°: Р’С‹ РјРѕР¶РµС‚Рµ РѕС‚РєР»СЋС‡РёС‚СЊ РїРѕРјРѕС‰СЊ РІ /mm -> РЅР°СЃС‚СЂРѕР№РєРё'
+	if color == -1616928769 and (text == 'Подсказка: Чтобы открыть инвентарь, нажмите \'Y\'' or
+								 text == 'Подсказка: Чтобы взаимодействовать с ботом/игроком, нажмите \'пр. кнопка мыши\' + \'H\'' or
+								 text == 'Подсказка: Чтобы открыть багажник машины, нажмите \'пр. кнопка мыши\' + \'Прыжок\'' or
+								 text == 'Подсказка: Вы можете отключить помощь в /mm -> настройки'
 		) then return false
 	end
 
-	if color == -10059521 and (text:find('РћС‚РєР»РѕРЅРёР» РѕР±СЉСЏРІР»РµРЅРёРµ. РџСЂРёС‡РёРЅР°:') or
-							   text:find('РќРёРєС‚Рѕ РЅРµ РїРѕРґР°РІР°Р» РѕР±СЉСЏРІР»РµРЅРёР№') or
-							   text:find('Р”Р°РЅРЅРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ СѓР¶Рµ СЂРµРґР°РєС‚РёСЂСѓРµС‚') or
-							   text:find('РўРѕС‚, РєС‚Рѕ РїРѕРґР°Р» РѕР±СЉСЏРІР»РµРЅРёРµ, РїРѕРєРёРЅСѓР» СЃРµСЂРІРµСЂ')
+	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or
+							   text:find('Никто не подавал объявлений') or
+							   text:find('Данное объявление уже редактирует') or
+							   text:find('Тот, кто подал объявление, покинул сервер')
 		) then
 		send(text)
 		return false
 	end
 
-	if color == -1 and text:find('Р—Р° РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІС‹ РїРѕР»СѓС‡РёР»Рё') then
+	if color == -1 and text:find('За опубликованное сообщение вы получили') then
 		text = text:gsub('%{......%}', '')
 		send(text)
 		
@@ -751,7 +751,7 @@ function sampev.onServerMessage(color, text)
 		return false
 	end
 
-	if color == -1 and (text:find('Р’С‹ РѕС‚РєР»РѕРЅРёР»Рё РѕР±СЉСЏРІР»РµРЅРёРµ') or text:find('РўРѕС‚, РєС‚Рѕ РїРѕРґР°Р» РѕР±СЉСЏРІР»РµРЅРёРµ, РїРѕРєРёРЅСѓР» СЃРµСЂРІРµСЂ')) then
+	if color == -1 and (text:find('Вы отклонили объявление') or text:find('Тот, кто подал объявление, покинул сервер')) then
 		send(text)
 		return false
 	end
@@ -783,7 +783,7 @@ function sampev.onServerMessage(color, text)
 	-- end
 
 	if adLockText then
-		if color == 2147418282 and not text:find('РћР±СЉСЏРІР»РµРЅРёРµ РїСЂРѕРІРµСЂРёР» СЂР°Р±РѕС‚РЅРёРє: (.+)%[(%d+)%]$') then
+		if color == 2147418282 and not text:find('Объявление проверил работник: (.+)%[(%d+)%]$') then
 			adStringEtc = text
 			adLockEtc = true
 			return false
@@ -794,8 +794,8 @@ function sampev.onServerMessage(color, text)
 		adStringText = text:gsub('%[News Studio%]%s', '')
 		adLockText = true
 		return false
-	elseif color == 2147418282 and text:find('РћР±СЉСЏРІР»РµРЅРёРµ РїСЂРѕРІРµСЂРёР» СЂР°Р±РѕС‚РЅРёРє: (.+)%[(%d+)%]$') then
-		adStringEmployee = text:gsub('    ', '') -- СѓРІС‹ СЌС‚Рѕ РЅРµ С‚Р°Р±СѓР»СЏС†РёСЏ, Р° 4 РїСЂРѕР±РµР»С‹, СЂР°Р·СЂР°Р± РјС… РїСЂРѕСЃС‚Рѕ РіРµРЅРёР№
+	elseif color == 2147418282 and text:find('Объявление проверил работник: (.+)%[(%d+)%]$') then
+		adStringEmployee = text:gsub('    ', '') -- увы это не табуляция, а 4 пробелы, разраб мх просто гений
 		if adLockEtc then
 			local tempText, adChar = adStringText:match('(.*)(%p)$')
 			if adChar == '-' then
@@ -962,7 +962,7 @@ end
 function onScriptTerminate(s, q)
 	if s == thisScript() then
 		if not lockFailed then
-			send('Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє СЃ СЃРєСЂРёРїС‚РѕРј... РћС‚РєР»СЋС‡Р°РµРј, С‡С‚РѕР±С‹ РїРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ РЅР°Р¶РјРё CTRL + R')
+			send('Что-то пошло не так с скриптом... Отключаем, чтобы перезагрузить нажми CTRL + R')
 		end
 		return true
 	end
