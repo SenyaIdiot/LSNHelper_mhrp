@@ -603,17 +603,17 @@ function main()
 		-- imgui.StrCopy(adInput, u8(adText))
 	-- end)
 
-	-- sampRegisterChatCommand('lsn_verify', function()
-	-- 	if lockVerify then
-	-- 		if renderWindow[0] or sampIsDialogActive() then				
-	-- 			send('Закройте диалог и снова вводите /lsn_verify')
-	-- 		else
-	-- 			checkVerify = true
-	-- 			send('Обновляю '..oldVersion ..' -> '..newVersion..' ...')
-	-- 			lockVerify = false
-	-- 		end
-	-- 	end
-	-- end)
+	sampRegisterChatCommand('lsn_verify', function()
+		if lockVerify then
+			if renderWindow[0] or sampIsDialogActive() then				
+				send('Закройте диалог и снова вводите /lsn_verify')
+			else
+				checkVerify = true
+				send('Обновляю '..oldVersion ..' -> '..newVersion..' ...')
+				lockVerify = false
+			end
+		end
+	end)
 
 	sampRegisterChatCommand('lsn_menu', function()
 		if not renderWindow[0] then menuWindow[0] = not menuWindow[0] else send('Сначала заканчивайте с объявлением, затем внов вводите повторно команды') end
