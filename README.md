@@ -31,7 +31,7 @@ Cкрипт LSN-Helper специально для проекта MyHome Role Pl
 
 ## Требование
 - **MoonLoader:** v0.26 или новое
-- **Библиотеки MoonLoader** mimgui, ffi, samp.events (SAMP.lua), inicfg
+- **Библиотеки MoonLoader:** mimgui, ffi, samp.events (SAMP.lua), inicfg
 - **SAMPFUNCS:** 5.4.1-final или новое (для лаунчера только 5.4.1-final)
 
 ## Установка
