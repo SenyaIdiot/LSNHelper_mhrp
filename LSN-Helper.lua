@@ -10,7 +10,7 @@ local dlstatus = require('moonloader').download_status
 if not doesDirectoryExist('moonloader/config') then createDirectory("moonloader/config") end
 if not doesDirectoryExist('moonloader/config/LSN-Helper') then createDirectory ("moonloader/config/LSN-Helper") end
 
-local imgui = require 'mimgui' -- теперь мимгуй, а не имгуй...
+local imgui = require 'mimgui' -- С‚РµРїРµСЂСЊ РјРёРјРіСѓР№, Р° РЅРµ РёРјРіСѓР№...
 local encoding = require 'encoding'
 local ffi = require 'ffi'
 local sampev = require 'lib.samp.events'
@@ -81,7 +81,7 @@ local script_path = thisScript().path
 -- local script_url = 'https://github.com/kyrtion/LSNHelper_mhrp/blob/beta/LSN-Helper.lua?raw=true'
 -- local script_path = thisScript().path
 
-function send(result) sampAddChatMessage('LSNH » '.. result, 0xEEDC82) end
+function send(result) sampAddChatMessage('LSNH В» '.. result, 0xEEDC82) end
 
 imgui.OnInitialize(function() imgui.DarkTheme(); imgui.GetIO().IniFilename = nil; end)
 
@@ -92,9 +92,9 @@ local newFrame = imgui.OnFrame(
 		local sizeX, sizeY = 700, 340
 		imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY * 1.04))
-		imgui.Begin(u8'Публикация oбъявления | LSN-Helper '..thisScript().version, nil, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
+		imgui.Begin(u8'РџСѓР±Р»РёРєР°С†РёСЏ oР±СЉСЏРІР»РµРЅРёСЏ | LSN-Helper '..thisScript().version, nil, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse)
 
-		imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('Отправитель:'); imgui.SameLine((sizeX - 15) / 2 + 10); imgui.TextColoredRGB('Цена:')
+		imgui.SetCursorPos(imgui.ImVec2(20, 40)); imgui.TextColoredRGB('РћС‚РїСЂР°РІРёС‚РµР»СЊ:'); imgui.SameLine((sizeX - 15) / 2 + 10); imgui.TextColoredRGB('Р¦РµРЅР°:')
 		imgui.SetCursorPos(imgui.ImVec2(20, 60));
 		imgui.BeginChild('ChildWindows1', imgui.ImVec2(sizeX - 372, 25), true)
 		imgui.TextColoredRGB('{FFFFFF}' .. adNick)
@@ -106,7 +106,7 @@ local newFrame = imgui.OnFrame(
 		imgui.EndChild()
 		
 		imgui.SetCursorPos(imgui.ImVec2(20, 100))
-		imgui.TextColoredRGB('Текст:')
+		imgui.TextColoredRGB('РўРµРєСЃС‚:')
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 120))
 		imgui.BeginChild('ChildWindows3', imgui.ImVec2(sizeX - 40, 25), true)
@@ -114,14 +114,14 @@ local newFrame = imgui.OnFrame(
 		imgui.EndChild()
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 165))
-		imgui.TextColoredRGB('Введите новый текст для этого объявления. Но не оставьте поле пустым!')
+		imgui.TextColoredRGB('Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ С‚РµРєСЃС‚ РґР»СЏ СЌС‚РѕРіРѕ РѕР±СЉСЏРІР»РµРЅРёСЏ. РќРѕ РЅРµ РѕСЃС‚Р°РІСЊС‚Рµ РїРѕР»Рµ РїСѓСЃС‚С‹Рј!')
 
 		imgui.SetCursorPos(imgui.ImVec2(20, 180))
-		imgui.TextColoredRGB('Вы так-же можете отклонить объявление с написанной в поле причиной и нажав после кнопку "Отклонить".')
+		imgui.TextColoredRGB('Р’С‹ С‚Р°Рє-Р¶Рµ РјРѕР¶РµС‚Рµ РѕС‚РєР»РѕРЅРёС‚СЊ РѕР±СЉСЏРІР»РµРЅРёРµ СЃ РЅР°РїРёСЃР°РЅРЅРѕР№ РІ РїРѕР»Рµ РїСЂРёС‡РёРЅРѕР№ Рё РЅР°Р¶Р°РІ РїРѕСЃР»Рµ РєРЅРѕРїРєСѓ "РћС‚РєР»РѕРЅРёС‚СЊ".')
 
 		if copying then
 			imgui.SetCursorPos(imgui.ImVec2(20, 210))
-			imgui.TextColoredRGB('{FFAA00}Текст совпадает одной и тоже, скопировано в прошлом раз. Проверьте, всё правильно ли написано.')
+			imgui.TextColoredRGB('{FFAA00}РўРµРєСЃС‚ СЃРѕРІРїР°РґР°РµС‚ РѕРґРЅРѕР№ Рё С‚РѕР¶Рµ, СЃРєРѕРїРёСЂРѕРІР°РЅРѕ РІ РїСЂРѕС€Р»РѕРј СЂР°Р·. РџСЂРѕРІРµСЂСЊС‚Рµ, РІСЃС‘ РїСЂР°РІРёР»СЊРЅРѕ Р»Рё РЅР°РїРёСЃР°РЅРѕ.')
 		end
 
 		imgui.SetCursorPos(imgui.ImVec2(20, sizeY - 110))
@@ -136,9 +136,9 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.34, 0.42, 0.51, 1.0))
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.34, 0.42, 0.51, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.34, 0.42, 0.51, 0.8))
-		if imgui.Button(u8'Передать в /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'РџРµСЂРµРґР°С‚СЊ РІ /rb', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(adText)) == (nil or '') then
-				send('В тексте пусто, зачем сообщать?', -1)
+				send('Р’ С‚РµРєСЃС‚Рµ РїСѓСЃС‚Рѕ, Р·Р°С‡РµРј СЃРѕРѕР±С‰Р°С‚СЊ?', -1)
 			else
 				sampSendChat('/rb '.. adNick .. ' (' .. adPrice .. '): '.. adText)
 			end
@@ -146,18 +146,18 @@ local newFrame = imgui.OnFrame(
 		imgui.PopStyleColor(3)
 
 		imgui.SameLine((sizeX - 17) / 2 + 10)
-		if imgui.Button(u8'Поиск', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
-			imgui.OpenPopup(u8'Поиск')
+		if imgui.Button(u8'РџРѕРёСЃРє', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+			imgui.OpenPopup(u8'РџРѕРёСЃРє')
 		end
 
-		if imgui.BeginPopupModal(u8'Поиск', _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
+		if imgui.BeginPopupModal(u8'РџРѕРёСЃРє', _, imgui.WindowFlags.NoMove + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse) then
 			local pSize = imgui.ImVec2(770, 400)
 			imgui.SetWindowSizeVec2(pSize)
 			
 			imgui.SetCursorPos(imgui.ImVec2(20, 45))
-			imgui.Text(u8'Текст:') imgui.SameLine(70) imgui.TextColoredRGB(adText)
+			imgui.Text(u8'РўРµРєСЃС‚:') imgui.SameLine(70) imgui.TextColoredRGB(adText)
 			
-			imgui.SetCursorPos(imgui.ImVec2(20, 70)) imgui.Text(u8'Поиск:')
+			imgui.SetCursorPos(imgui.ImVec2(20, 70)) imgui.Text(u8'РџРѕРёСЃРє:')
 			
 			imgui.SetCursorPos(imgui.ImVec2(70, 66))
 			imgui.PushItemWidth(pSize.x/2 + 294)
@@ -169,7 +169,7 @@ local newFrame = imgui.OnFrame(
 			imgui.PopItemWidth()
 			
 			imgui.SetCursorPos(imgui.ImVec2(21, 108))
-			imgui.Text(u8'Результаты:')
+			imgui.Text(u8'Р РµР·СѓР»СЊС‚Р°С‚С‹:')
 			
 			imgui.SetCursorPos(imgui.ImVec2(20, 130))
 			imgui.BeginChild('ChildWindowsS', imgui.ImVec2(pSize.x/2 + 344, pSize.y/2 + 12), true)
@@ -220,7 +220,7 @@ local newFrame = imgui.OnFrame(
 					imgui.Separator()
 				end
 			end
-			-- будет второй вариант для результаты поисков
+			-- Р±СѓРґРµС‚ РІС‚РѕСЂРѕР№ РІР°СЂРёР°РЅС‚ РґР»СЏ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РїРѕРёСЃРєРѕРІ
 			--[[for i=1, #adList do
 				if string.len(str(searchInput)) ~= 0 then
 					if string.find(u8(adList[i]), str(searchInput), 1, true) then
@@ -261,7 +261,7 @@ local newFrame = imgui.OnFrame(
 
 
 			imgui.SetCursorPos(imgui.ImVec2(20, pSize.y - 42))
-			if imgui.Button(u8'Закрыть', imgui.ImVec2(pSize.x/2 + 344, 25)) then
+			if imgui.Button(u8'Р—Р°РєСЂС‹С‚СЊ', imgui.ImVec2(pSize.x/2 + 344, 25)) then
 				searchInput = new.char[256]('')
 				imgui.CloseCurrentPopup()
 			end
@@ -273,12 +273,12 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.77, 0.33, 1.0))
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.2, 0.77, 0.33, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.2, 0.77, 0.33, 0.8))
-		if imgui.Button(u8'Опубликовать', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'РћРїСѓР±Р»РёРєРѕРІР°С‚СЊ', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			local tempText = (u8:decode(str(adInput)))
 			local Char = tempText:match('.+(%p)$')
 			
 			if (u8:decode(str(adInput))) == (nil or '') then
-				send('В тексте пусто, зачем отправлять?', -1)
+				send('Р’ С‚РµРєСЃС‚Рµ РїСѓСЃС‚Рѕ, Р·Р°С‡РµРј РѕС‚РїСЂР°РІР»СЏС‚СЊ?', -1)
 
 			elseif Char and Char ~= ('$' or ',' or '/' or '>' or '<' or '-' or '=' or '+' or '_' or "'" or '"') then
 				sampSendDialogResponse(1536, 1, 0, (u8:decode(str(adInput))))
@@ -293,7 +293,7 @@ local newFrame = imgui.OnFrame(
 				adNick, adPrice, adText = '', '', ''
 			
 			else
-				send('Вы не ставили в конце знаки препинание')
+				send('Р’С‹ РЅРµ СЃС‚Р°РІРёР»Рё РІ РєРѕРЅС†Рµ Р·РЅР°РєРё РїСЂРµРїРёРЅР°РЅРёРµ')
 			end
 		end
 		imgui.PopStyleColor(3)
@@ -302,9 +302,9 @@ local newFrame = imgui.OnFrame(
 		imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(1.00, 0.25, 0.25, 0.9))
 		imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(1.00, 0.25, 0.25, 0.8))
 		imgui.SameLine((sizeX - 17) / 2 + 10)
-		if imgui.Button(u8'Отклонить', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
+		if imgui.Button(u8'РћС‚РєР»РѕРЅРёС‚СЊ', imgui.ImVec2((sizeX - 42) / 2 , 25)) then
 			if (u8:decode(str(adInput))) == (nil or '') then
-				send('Вы не указали причину в поле', -1)
+				send('Р’С‹ РЅРµ СѓРєР°Р·Р°Р»Рё РїСЂРёС‡РёРЅСѓ РІ РїРѕР»Рµ', -1)
 			else
 				sampSendDialogResponse(1536, 0, 0, (u8:decode(str(adInput))))
 				
@@ -335,7 +335,7 @@ function main()
 	if not doesFileExist(adJson) then json(adJson):write({}) end
 	adList = json(adJson):read()
 
-	send('Скрипт успешно загружено. Версия: '..thisScript().version)
+	send('РЎРєСЂРёРїС‚ СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅРѕ. Р’РµСЂСЃРёСЏ: '..thisScript().version)
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	-- --! debug window (dont use)
@@ -347,10 +347,10 @@ function main()
 	sampRegisterChatCommand('verify', function()
 		if lockVerify then
 			if renderWindow[0] or sampIsDialogActive() then				
-				send('Закройте диалог и снова вводите /verify')
+				send('Р—Р°РєСЂРѕР№С‚Рµ РґРёР°Р»РѕРі Рё СЃРЅРѕРІР° РІРІРѕРґРёС‚Рµ /verify')
 			else
 				checkVerify = true
-				send('Обновляю '..oldVersion ..' -> '..newVersion..' ...')
+				send('РћР±РЅРѕРІР»СЏСЋ '..oldVersion ..' -> '..newVersion..' ...')
 				lockVerify = false
 			end
 		end
@@ -359,17 +359,17 @@ function main()
 	downloadUrlToFile(update_url, update_path, function(id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			updateIni = inicfg.load(nil, update_path)
-			if updateIni ~= nil or updateIni.info.version ~= nil then
+			if tostring(updateIni) ~= nil or tostring(updateIni.info.version) ~= nil then
 				newVersion = tostring(updateIni.info.version):gsub('"', '')
 				oldVersion = tostring(thisScript().version)
 				if newVersion ~= oldVersion then
-					send('Есть обновление! Версия: '..newVersion..'. Чтобы обновить вводите /verify', -1)
+					send('Р•СЃС‚СЊ РѕР±РЅРѕРІР»РµРЅРёРµ! Р’РµСЂСЃРёСЏ: '..newVersion..'. Р§С‚РѕР±С‹ РѕР±РЅРѕРІРёС‚СЊ РІРІРѕРґРёС‚Рµ /verify', -1)
 					update_state = true
 					lockVerify = true
 				end
 				os.remove(update_path)
 			else
-				send('Невозможно проверить наличие обновление. Нажмите CTRL + R чтобы перезагрузить')
+				send('РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ РЅР°Р»РёС‡РёРµ РѕР±РЅРѕРІР»РµРЅРёРµ. РќР°Р¶РјРёС‚Рµ CTRL + R С‡С‚РѕР±С‹ РїРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ')
 			end
 		end
 	end)
@@ -379,7 +379,7 @@ function main()
 		if update_state and checkVerify then
 			downloadUrlToFile(script_url, script_path, function(id, status)
 				if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-					send('Скрипт успешно обновлен! Сейчас будет перезагружен', -1)
+					send('РЎРєСЂРёРїС‚ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ! РЎРµР№С‡Р°СЃ Р±СѓРґРµС‚ РїРµСЂРµР·Р°РіСЂСѓР¶РµРЅ', -1)
 					lockFailed = true
 					thisScript():reload()
 				end
@@ -398,15 +398,15 @@ function onWindowMessage(msg, wparam, lparam)
 end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
-	if id == 1536 and title == '{6333FF}Публикация объявления' then
+	if id == 1536 and title == '{6333FF}РџСѓР±Р»РёРєР°С†РёСЏ РѕР±СЉСЏРІР»РµРЅРёСЏ' then
 		if notAdNick then
-			adNick = ( text:match('%{ffffff%}Отправитель%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
+			adNick = ( text:match('%{ffffff%}РћС‚РїСЂР°РІРёС‚РµР»СЊ%: %{7FFF00%}(%w+ %w+)') ):gsub("\n", "")
 			notAdNick = false
-			send('Вы не обновили актуальный диалог для редактирования объявление, ID отправителя не будет показан.')
-			send('В следующий раз когда появится сообщение /edit, вводите команды только без диалога!')
+			send('Р’С‹ РЅРµ РѕР±РЅРѕРІРёР»Рё Р°РєС‚СѓР°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РѕР±СЉСЏРІР»РµРЅРёРµ, ID РѕС‚РїСЂР°РІРёС‚РµР»СЏ РЅРµ Р±СѓРґРµС‚ РїРѕРєР°Р·Р°РЅ.')
+			send('Р’ СЃР»РµРґСѓСЋС‰РёР№ СЂР°Р· РєРѕРіРґР° РїРѕСЏРІРёС‚СЃСЏ СЃРѕРѕР±С‰РµРЅРёРµ /edit, РІРІРѕРґРёС‚Рµ РєРѕРјР°РЅРґС‹ С‚РѕР»СЊРєРѕ Р±РµР· РґРёР°Р»РѕРіР°!')
 		end
-		adText = ( text:match('%{ffffff%}Текст%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
-		adPrice = ( text:match('%{ffffff%}Цена%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
+		adText = ( text:match('%{ffffff%}РўРµРєСЃС‚%:%{7FFF00%} (.*)%{ffffff%}') ):gsub("\n", "")
+		adPrice = ( text:match('%{ffffff%}Р¦РµРЅР°%:%{7FFF00%} (.*)%{FFFFFF%}') ):gsub("\n", "")
 		renderWindow[0] = true
 		if editList[adText] == nil then
 			imgui.StrCopy(adInput, u8(adText))
@@ -417,7 +417,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 		end
 		return false
 
-	elseif id == 1537 and title == '{6333FF}Публикация объявления: {ffffff}Подтверждение' and confirm then
+	elseif id == 1537 and title == '{6333FF}РџСѓР±Р»РёРєР°С†РёСЏ РѕР±СЉСЏРІР»РµРЅРёСЏ: {ffffff}РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ' and confirm then
 		sampSendDialogResponse(1537, 1, 0, 0)
 		confirm = false
 		return false
@@ -435,39 +435,46 @@ function sampev.onSendDialogResponse(dialogId, button, listboxId, input)
 	end
 end
 
+local adStringText = ''
+local adStringEtc = ''
+local adStringEmployee = ''
+local adLockText = false
+local adLockEtc = false
+
+local newsStringText = ''
+local newsLockText = false
+
 function sampev.onServerMessage(color, text)
 	if color == 2147418282 then
-		if text:find('новое объявление на проверку') then
+		if text:find('РЅРѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ РЅР° РїСЂРѕРІРµСЂРєСѓ') then
 			printStyledString('/edit', 5000, 4)
 			send(text)
 			return false
-
-		elseif text:find('запросил отказ на публикацию') then
+		elseif text:find('Р·Р°РїСЂРѕСЃРёР» РѕС‚РєР°Р· РЅР° РїСѓР±Р»РёРєР°С†РёСЋ') then
 			send(text)
 			return false
-			
 		end
 	end
 
-	if color == -1616928769 and (text == "Подсказка: Чтобы открыть инвентарь, нажмите 'Y'" or
-								 text == "Подсказка: Чтобы взаимодействовать с ботом/игроком, нажмите 'пр. кнопка мыши' + 'H'" or
-								 text == "Подсказка: Чтобы открыть багажник машины, нажмите 'пр. кнопка мыши' + 'Прыжок'" or
-								 text == "Подсказка: Вы можете отключить помощь в /mm -> настройки"
+	if color == -1616928769 and (text == "РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РѕС‚РєСЂС‹С‚СЊ РёРЅРІРµРЅС‚Р°СЂСЊ, РЅР°Р¶РјРёС‚Рµ 'Y'" or
+								 text == "РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРѕРІР°С‚СЊ СЃ Р±РѕС‚РѕРј/РёРіСЂРѕРєРѕРј, РЅР°Р¶РјРёС‚Рµ 'РїСЂ. РєРЅРѕРїРєР° РјС‹С€Рё' + 'H'" or
+								 text == "РџРѕРґСЃРєР°Р·РєР°: Р§С‚РѕР±С‹ РѕС‚РєСЂС‹С‚СЊ Р±Р°РіР°Р¶РЅРёРє РјР°С€РёРЅС‹, РЅР°Р¶РјРёС‚Рµ 'РїСЂ. РєРЅРѕРїРєР° РјС‹С€Рё' + 'РџСЂС‹Р¶РѕРє'" or
+								 text == "РџРѕРґСЃРєР°Р·РєР°: Р’С‹ РјРѕР¶РµС‚Рµ РѕС‚РєР»СЋС‡РёС‚СЊ РїРѕРјРѕС‰СЊ РІ /mm -> РЅР°СЃС‚СЂРѕР№РєРё"
 		) then return false
 	end
 
-	if color == -10059521 and (text:find('Отклонил объявление. Причина:') or
-							   text:find('Никто не подавал объявлений') or
-							   text:find('Данное объявление уже редактирует') or
-							   text:find('Тот, кто подал объявление, покинул сервер')
+	if color == -10059521 and (text:find('РћС‚РєР»РѕРЅРёР» РѕР±СЉСЏРІР»РµРЅРёРµ. РџСЂРёС‡РёРЅР°:') or
+							   text:find('РќРёРєС‚Рѕ РЅРµ РїРѕРґР°РІР°Р» РѕР±СЉСЏРІР»РµРЅРёР№') or
+							   text:find('Р”Р°РЅРЅРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ СѓР¶Рµ СЂРµРґР°РєС‚РёСЂСѓРµС‚') or
+							   text:find('РўРѕС‚, РєС‚Рѕ РїРѕРґР°Р» РѕР±СЉСЏРІР»РµРЅРёРµ, РїРѕРєРёРЅСѓР» СЃРµСЂРІРµСЂ')
 		) then
 		send(text)
 		return false
 	end
 
-	if color == -1 and text:find('За опубликованное сообщение вы получили') then
+	if color == -1 and text:find('Р—Р° РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІС‹ РїРѕР»СѓС‡РёР»Рё') then
 		TText = text:match('%{008000%}(%d+)$%{ffffff%}')
-		send('За опубликованное сообщение вы получили '..TText..'$ на ваш банк. счёт.')
+		send('Р—Р° РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІС‹ РїРѕР»СѓС‡РёР»Рё '..TText..'$ РЅР° РІР°С€ Р±Р°РЅРє. СЃС‡С‘С‚.')
 		
 		lua_thread.create(function()
 			wait(100)
@@ -477,16 +484,67 @@ function sampev.onServerMessage(color, text)
 		return false
 	end
 
-	if color == -1 and (text:find('Вы отклонили объявление') or text:find('Тот, кто подал объявление, покинул сервер')) then
+	if color == -1 and (text:find('Р’С‹ РѕС‚РєР»РѕРЅРёР»Рё РѕР±СЉСЏРІР»РµРЅРёРµ') or text:find('РўРѕС‚, РєС‚Рѕ РїРѕРґР°Р» РѕР±СЉСЏРІР»РµРЅРёРµ, РїРѕРєРёРЅСѓР» СЃРµСЂРІРµСЂ')) then
 		send(text)
 		return false
 	end
 
-	--! этот код только в самом конце функции
-	if color == 2147418282 and text:find('[News Studio]') then
+	--[[
+		[ML] (script) clock.lua: [CHAT] color: <-453656662> | text: <[Los Santos News] Martin Sonnet: Р’ С‚Р°РєСЃРѕРїР°СЂРє РїСЂРµРјРёСѓРј РєР»Р°СЃСЃР° "Prestige" С‚СЂРµР±СѓСЋС‚СЃСЏ РІРѕРґРёС‚РµР»Рё, РІС‹СЃРѕРєРёРµ Р·Р°СЂРїР»Р°С‚С‹, СЃРІРѕР±РѕРґРЅС‹Р№ РіСЂР°С„РёРє, >
+		[ML] (script) clock.lua: [CHAT] color: <-453656577> | text: <РїСЂРµРјРёРё. РњС‹ РІ GPS: 11-8.>
+		[ML] (script) clock.lua: [CHAT] color: <-453656577> | text: <{BDDE76}[Los Santos News] Adam Washington: {E4F5BF}"Cayot Taxi" РґРѕРІРµР·РµРј Р±С‹СЃС‚СЂРѕ Рё СЃ РєРѕРјС„РѕСЂС‚РѕРј! Р Р°Р±РѕС‚Р°РµРј 24/7. РќР°С€ РЅРѕРјРµСЂ 555-555.>
+
+	]]
+	if newsLockText and not text:find('%{BDDE76%}') then
+		if color == (-453656577 or -453656662) then
+			newsStringText = newsStringText..text
+			sampAddChatMessage(newsStringText, -1)
+		else
+			sampAddChatMessage(newsStringText, -1)
+		end
+		newsLockText = false
+	end
+
+	if color == (-453656577 or -453656662) and text:find('%{BDDE76%}%[Los Santos News%]') then
+		newsStringText = text
+		newsLockText = true
+	end
+
+	if adLockText and color == 2147418282 then
+		if not text:find('РћР±СЉСЏРІР»РµРЅРёРµ РїСЂРѕРІРµСЂРёР» СЂР°Р±РѕС‚РЅРёРє: (.+)%[(%d+)%]$') then
+			adStringEtc = text
+			adLockEtc = true
+			return false
+		end
+	end
+
+	if color == 2147418282 and text:find('%[News Studio%]') then
+		adStringText = text
+		adLockText = true
+		return false
+	elseif color == 2147418282 and text:find('РћР±СЉСЏРІР»РµРЅРёРµ РїСЂРѕРІРµСЂРёР» СЂР°Р±РѕС‚РЅРёРє: (.+)%[(%d+)%]$') then
+		adStringEmployee = text:gsub('    ', '') -- СѓРІС‹ СЌС‚Рѕ РЅРµ С‚Р°Р±СѓР»СЏС†РёСЏ, Р° 4 РїСЂРѕР±РµР»С‹, СЂР°Р·СЂР°Р± РјС… РїСЂРѕСЃС‚Рѕ РіРµРЅРёР№
+		if adLockEtc then
+			local tempText, adChar = adStringText:match('(.*)(%p)$')
+			if adChar == '-' then
+				adStringText = tempText..adStringEtc
+			else
+				adStringText = adStringText..adStringEtc
+			end
+		end
+		local clr = 0x00ff00
+		sampAddChatMessage(adStringText, clr)
+		sampAddChatMessage(adStringEmployee, clr)
+		adStringText, adStringEtc, adStringEmployee = '', '', ''
+		adLockText, adLockEtc = false, false
+		return false
+	end
+
+	--! СЌС‚РѕС‚ РєРѕРґ С‚РѕР»СЊРєРѕ РІ СЃР°РјРѕРј РєРѕРЅС†Рµ С„СѓРЅРєС†РёРё, С‚Р°Рј РїРѕС‚РѕРє
+	if color == 2147418282 and text:find('%[News Studio%]') then
 		if text:match('%[News Studio%] (.*) %|') then 
-			wtfac = text:match('%[News Studio%] (.*) %|')
-			print('>> [' .. wtfac .. ']')
+			local wtfac = text:match('%[News Studio%] (.*) %|')
+			--print('>> [' .. wtfac .. ']')
 
 			lua_thread.create(function()
 				local lockAd = false
@@ -508,6 +566,7 @@ function sampev.onServerMessage(color, text)
 			return true
 		end
 	end
+
 end
 
 function imgui.TextColoredRGB(text)
@@ -649,7 +708,7 @@ end
 function onScriptTerminate(s, q)
 	if s == thisScript() then
 		if not lockFailed then
-			send('Что-то пошло не так с скриптом... Отключаем, чтобы перезагрузить нажми CTRL + R', -1)
+			send('Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє СЃ СЃРєСЂРёРїС‚РѕРј... РћС‚РєР»СЋС‡Р°РµРј, С‡С‚РѕР±С‹ РїРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ РЅР°Р¶РјРё CTRL + R', -1)
 		end
 		return true
 	end
