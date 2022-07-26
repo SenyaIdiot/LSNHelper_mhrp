@@ -297,6 +297,7 @@ local newFrame = imgui.OnFrame(
 				table.sort(editList, function(a,b) return a.date > b.date end)
 				json(editJson):write(editList)
 				adNick, adPrice, adText = '', '', ''
+				copying = false
 			else
 				send('Вы не ставили в конце знаки препинание')
 				--send('<'..Char..'>')
