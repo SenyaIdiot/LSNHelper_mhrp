@@ -594,7 +594,7 @@ function main()
 	if not doesFileExist(adJson) then json(adJson):write({}) end; adList = json(adJson):read()
 	if not doesFileExist(logJson) then json(logJson):write({}) end; logList = json(logJson):read()
 
-	send('Скрипт успешно загружено. Версия: '..thisScript().version)
+	send('Скрипт успешно загружено. Версия: '..thisScript().version..'. Команда: /lsn_menu')
 	print(); print('Script LSN-Helper '..thisScript().version..' loaded - Discord: kyrtion#7310')
 
 	-- --! debug window (dont use)
