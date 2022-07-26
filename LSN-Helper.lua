@@ -43,7 +43,7 @@ local editJson = getWorkingDirectory()..'/config/LSN-Helper/new_edit.json'; loca
 local adJson = getWorkingDirectory()..'/config/LSN-Helper/ad.json'; local adList = {}
 local logJson = getWorkingDirectory()..'/config/LSN-Helper/log.json'; local logList = {}
 
-local renderWindow = new.bool(true)
+local renderWindow = new.bool(false)
 local menuWindow = new.bool(false)
 
 local adInput = new.char[256]('')
@@ -605,7 +605,7 @@ function main()
 
 	sampRegisterChatCommand('lsn_verify', function()
 		if lockVerify then
-			if renderWindow[0] or sampIsDialogActive() then				
+			if renderWindow[0] or sampIsDialogActive() then			
 				send('Закройте диалог и снова вводите /lsn_verify')
 			else
 				checkVerify = true
