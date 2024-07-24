@@ -37,10 +37,10 @@ Cкрипт LSN-Helper специально для проекта MyHome Role Pl
 ## Установка
 **Папка**. Распакуете папка install и скидываете в корней игры, где есть gta_sa.exe
 
-**Скрипт**. Если у вас на сборке заранее установлены MoonLoader и SAMPFUNCS, а также работоспособны в любом скрипте. В таком случае скрипт (LSN-Helper.lua) скидывать в папку moonloader
+**Скрипт**. Если у вас на сборке заранее установлены MoonLoader и SAMPFUNCS, то в таком случае скрипт (LSN-Helper.lua) скидывать в папку moonloader
 
 ## Автор скрипта
-- Martin Sonnet aka kyrtion
+- Martin Sonnet aka kyrtion, modified by SenyaIdiot aka noname2024
 - Telegram: https://t.me/kyrtion
 - VKontakte: https://vk.com/kyrtion
-- Discord: kyrtion#7310
+- Discord: kyrtion#7310, modified by noname2024
